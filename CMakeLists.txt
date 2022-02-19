@@ -1,14 +1,14 @@
-cmake_minimum_required(VERSION 3.21.1)
+cmake_minimum_required(VERSION 3.16)
 
 project(libsa)
-
-set(CMAKE_CXX_STANDARD 20)
 
 enable_testing()
 
 add_library(libsa sa.cpp)
 
 set_target_properties(libsa PROPERTIES PUBLIC_HEADER sa.h)
+
+target_compile_features(libsa PRIVATE cxx_std_17)
 
 install(TARGETS libsa DESTINATION lib PUBLIC_HEADER DESTINATION include)
 

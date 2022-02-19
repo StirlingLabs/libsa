@@ -8,7 +8,9 @@
 #define SOCKADDR_NET_EXPORT extern
 #endif
 
+#ifdef __cplusplus
 extern "C" {
+#ifdef __cplusplus
 
 SOCKADDR_NET_EXPORT bool sa_is_ipv4(struct sockaddr *sa);
 
@@ -32,4 +34,6 @@ SOCKADDR_NET_EXPORT const char * sa_get_scope(struct sockaddr *sa);
 
 SOCKADDR_NET_EXPORT bool sa_set_scope(struct sockaddr *sa, const char * scope);
 
+#ifdef __cplusplus
 }
+#ifdef __cplusplus

@@ -1,3 +1,5 @@
+set(CMAKE_CXX_STANDARD 17)
+
 include(FetchContent)
 
 FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/master.zip)
@@ -5,7 +7,6 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 include(GoogleTest)
-
 
 function(define_gtest test_name)
     add_executable(${test_name} ${test_name}.cpp)
@@ -25,4 +26,3 @@ define_gtest(test_sa_get_port)
 define_gtest(test_sa_set_port)
 define_gtest(test_sa_get_scope)
 define_gtest(test_sa_set_scope)
-
