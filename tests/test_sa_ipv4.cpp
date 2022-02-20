@@ -2,10 +2,12 @@
 #include "../common.h"
 #include "../sa.h"
 
-TEST(libsatest, test_sa_ipv4) {
+TEST(sa, ipv4) {
     const char *s = "1.2.3.4";
 
-    sockaddr_in expected = {.sin_family = AF_INET, .sin_port = htons(1000)};
+    sockaddr_in expected;
+    expected.sin_family = AF_INET;
+    expected.sin_port = htons(1000);
     EXPECT_EQ(inet_pton(AF_INET, s, &expected.sin_addr), 1);
 
     auto actual = reinterpret_cast<sockaddr_in *>( sa_ipv4(s, 1000));
@@ -18,5 +20,5 @@ TEST(libsatest, test_sa_ipv4) {
 
     EXPECT_EQ(actual->sin_port, expected.sin_port);
 
-    delete actual;
+    sa_free(actual);
 }

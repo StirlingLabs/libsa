@@ -2,10 +2,12 @@
 #include "../common.h"
 #include "../sa.h"
 
-TEST(libsatest, test_sa_ipv6) {
+TEST(sa, ipv6) {
     const char *s = "::ffff:0102:0304";
 
-    sockaddr_in6 expected{.sin6_family = AF_INET6, .sin6_port = htons(1000)};
+    sockaddr_in6 expected;
+    expected.sin6_family = AF_INET6;
+    expected.sin6_port = htons(1000);
 
     EXPECT_EQ(inet_pton(AF_INET6, s, &expected.sin6_addr), 1);
 
@@ -22,5 +24,5 @@ TEST(libsatest, test_sa_ipv6) {
 
     EXPECT_EQ(actual->sin6_port, expected.sin6_port);
 
-    delete actual;
+    sa_free(actual);
 }
