@@ -3,10 +3,11 @@
 #include "../sa.h"
 
 bool sa_free_wrap_called;
-sa_free_t * old_sa_free;
+sa_mm_fns_t old_mm;
+sa_mm_fns_t new_mm;
 void sa_free_wrap(const void * p) {
     sa_free_wrap_called = true;
-    old_sa_free(p);
+    old_mm.free(p);
 }
 
 TEST(sa, free_1) {
@@ -16,8 +17,13 @@ TEST(sa, free_1) {
     auto s = sa_address_to_str(sa);
 
     sa_free_wrap_called = false;
+    
+    old_mm = xch_sa_mm_fns(nullptr);
 
-    old_sa_free = xch_sa_free_fn(sa_free_wrap);
+    new_mm = old_mm;
+    new_mm.free = sa_free_wrap;
+
+    xch_sa_mm_fns(&new_mm);
 
     sa_free(sa);
 
@@ -28,8 +34,8 @@ TEST(sa, free_1) {
     sa_free(s);
 
     EXPECT_TRUE(sa_free_wrap_called);
-
-    xch_sa_free_fn(old_sa_free);
+    
+    xch_sa_mm_fns(&old_mm);
 }
 
 TEST(sa, free_2) {
@@ -40,7 +46,12 @@ TEST(sa, free_2) {
 
     sa_free_wrap_called = false;
 
-    old_sa_free = xch_sa_free_fn(sa_free_wrap);
+    old_mm = xch_sa_mm_fns(nullptr);
+
+    new_mm = old_mm;
+    new_mm.free = sa_free_wrap;
+
+    xch_sa_mm_fns(&new_mm);
 
     sa_free(sa);
 
@@ -52,7 +63,7 @@ TEST(sa, free_2) {
 
     EXPECT_TRUE(sa_free_wrap_called);
 
-    xch_sa_free_fn(old_sa_free);
+    xch_sa_mm_fns(&old_mm);
 }
 
 TEST(sa, free_3) {
@@ -63,7 +74,12 @@ TEST(sa, free_3) {
 
     sa_free_wrap_called = false;
 
-    old_sa_free = xch_sa_free_fn(sa_free_wrap);
+    old_mm = xch_sa_mm_fns(nullptr);
+
+    new_mm = old_mm;
+    new_mm.free = sa_free_wrap;
+
+    xch_sa_mm_fns(&new_mm);
 
     sa_free(sa);
 
@@ -75,7 +91,7 @@ TEST(sa, free_3) {
 
     EXPECT_TRUE(sa_free_wrap_called);
 
-    xch_sa_free_fn(old_sa_free);
+    xch_sa_mm_fns(&old_mm);
 }
 
 

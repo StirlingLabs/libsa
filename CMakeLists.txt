@@ -17,6 +17,9 @@ endif ()
 
 add_library(sa sa.c)
 
+set_property(TARGET sa PROPERTY C_STANDARD 11)
+set_property(TARGET sa PROPERTY C_STANDARD_REQUIRED OFF)
+
 set_target_properties(sa PROPERTIES PUBLIC_HEADER sa.h)
 
 target_include_directories(sa PRIVATE .)

@@ -6,7 +6,9 @@
 
 #else
 
-#include "stdint.h"
+#include <stdint.h>
+#include <stdalign.h>
+#include <assert.h>
 
 #endif
 
@@ -35,6 +37,21 @@ typedef void *sa_alloc_t(size_t size);
  */
 typedef void sa_free_t(const void *p);
 
+#define sa_mm_fns_align sizeof(void*)*2
+
+/**
+ * A matched pair of memory allocation and free functions.
+ */
+typedef struct sa_mm_fns {
+    alignas(sa_mm_fns_align) sa_alloc_t * alloc;
+    sa_free_t * free;
+} sa_mm_fns_t;
+
+static_assert(sizeof(sa_mm_fns_t) == sa_mm_fns_align,
+        "must be exactly the size of 2 pointers");
+
+static_assert(alignof(sa_mm_fns_t) == sa_mm_fns_align,
+        "must be exactly the alignment of 2 pointers");
 
 /**
  * Identifies socket addresses that are AF_UNSPEC.
@@ -249,20 +266,13 @@ SA_EXPORT const char *sa_scope_get_name(uint16_t scope);
 SA_EXPORT uint16_t sa_scope_get_index(const char *scope);
 
 /**
- * Gets the previous and sets the new memory allocation function,
- * or if the parameter is NULL, gets the current memory allocation function.
- * @param p Null or a pointer to the new memory allocation function.
- * @return The previous or current memory allocation function.
+ * Gets the previous and sets the new memory management functions,
+ * or if the parameter is NULL, gets the current memory management functions.
+ * @param p Null or a pointer to the new memory management functions.
+ * @return The previous or current memory management functions.
  */
-SA_EXPORT sa_alloc_t *xch_sa_alloc_fn(sa_alloc_t *p);
+SA_EXPORT sa_mm_fns_t xch_sa_mm_fns(sa_mm_fns_t *p);
 
-/**
- * Gets the previous and sets the new memory freeing function,
- * or if the parameter is NULL, gets the current memory freeing function.
- * @param p Null or a pointer to the new memory freeing function.
- * @return The previous or current memory freeing function.
- */
-SA_EXPORT sa_free_t *xch_sa_free_fn(sa_free_t *p);
 
 #ifdef __cplusplus
 }

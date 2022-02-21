@@ -7,35 +7,31 @@ static void *default_sa_alloc(size_t size) {
     return p;
 }
 
-static void default_free(const void* ptr) {
-    free((void*)ptr);
+static void default_free(const void *ptr) {
+    free((void *) ptr);
 }
 
-sa_alloc_t *sa_alloc_fn = default_sa_alloc;
+alignas(sa_mm_fns_align)
+static sa_mm_fns_t sa_mm_fns = {default_sa_alloc, default_free};
 
-sa_free_t *sa_free_fn = default_free;
+sa_mm_fns_t xch_sa_mm_fns(sa_mm_fns_t *p) {
+    // TODO: stdatomic.h; intrinsics? cmpxchg8/16b? see cas.h
 
-sa_alloc_t *xch_sa_alloc_fn(sa_alloc_t *p) {
-    sa_alloc_t *old = sa_alloc_fn;
-    if (p != NULL)
-        sa_alloc_fn = p;
-    return old;
-}
-
-sa_free_t *xch_sa_free_fn(sa_free_t *p) {
-    sa_free_t *old = sa_free_fn;
-    if (p != NULL)
-        sa_free_fn = p;
+    if (p == NULL || p->alloc == NULL || p->free == NULL) {
+        return sa_mm_fns;
+    }
+    sa_mm_fns_t old = sa_mm_fns;
+    sa_mm_fns = *p;
     return old;
 }
 
 INLINE void *sa_alloc(size_t size) {
-    return (*sa_alloc_fn)(size);
+    return (*sa_mm_fns.alloc)(size);
 }
 
 void sa_free(const void *p) {
     if (p != NULL) {
-        (*sa_free_fn)(p);
+        (*sa_mm_fns.free)(p);
     }
 }
 
