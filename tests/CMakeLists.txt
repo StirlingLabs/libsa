@@ -20,12 +20,20 @@ function(define_gtest test_name)
         set_target_properties(${test_name} PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
     endif ()
+
+    # help IDEs recognize changes to sa constitute rebuild of tests
+    set_property(
+            DIRECTORY
+            APPEND
+            PROPERTY CMAKE_CONFIGURE_DEPENDS "$<TARGET_FILE:sa>"
+    )
+
     gtest_discover_tests(${test_name})
 endfunction()
 
 
 file(GLOB test_sources "test_*.cpp")
-foreach(test_source ${test_sources})
+foreach (test_source ${test_sources})
     get_filename_component(test_name ${test_source} NAME_WLE)
     define_gtest(${test_name})
-endforeach()
+endforeach ()

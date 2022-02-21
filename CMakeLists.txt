@@ -34,6 +34,14 @@ install(TARGETS sa
 
 if (WIN32)
     target_link_libraries(sa LINK_PUBLIC wsock32 ws2_32 iphlpapi)
+    
+    # hack to make debugging shared builds convenient
+    if (WIN32 AND BUILD_SHARED_LIBS)
+        add_custom_command(TARGET sa POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "$<TARGET_FILE:sa>"
+                "${CMAKE_BINARY_DIR}/bin")
+    endif ()
 
     set_property(TARGET sa PROPERTY
             MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")

@@ -92,6 +92,13 @@ size_t sa_get_size_ipv6() {
     return sizeof(struct sockaddr_in6);
 }
 
+INLINE const char *_sa_unspec_to_str() {
+    char *s = sa_alloc(2);
+    if (s == NULL) return NULL;
+    s[0] = '*';
+    return s;
+}
+
 INLINE const char *_sa_ipv4_to_str(struct sockaddr_in *sa) {
     char *s = sa_alloc(INET_ADDRSTRLEN);
     if (s == NULL) return NULL;
@@ -120,7 +127,7 @@ const char *sa_address_to_str(struct sockaddr *sa) {
 
     switch (sa->sa_family) {
         case AF_UNSPEC:
-            return strdup("*");
+            return _sa_unspec_to_str();
 
         case AF_INET:
             return _sa_ipv4_to_str((struct sockaddr_in *) sa);
@@ -394,4 +401,23 @@ SA_BOOL sa_set_address_byte(struct sockaddr *sa, size_t offset, uint8_t value) {
     }
 
     return 0;
+}
+
+const uint8_t *sa_address_bytes(struct sockaddr *sa, size_t *size) {
+    if (sa == NULL) return NULL;
+    if (size == NULL) return NULL;
+
+    switch (sa->sa_family) {
+
+        case AF_INET:
+            *size = sizeof(struct in_addr);
+            return (uint8_t *) &((struct sockaddr_in *) sa)->sin_addr;
+
+        case AF_INET6:
+            *size = sizeof(struct in6_addr);
+            return (uint8_t *) &((struct sockaddr_in6 *) sa)->sin6_addr;
+
+    }
+
+    return NULL;
 }

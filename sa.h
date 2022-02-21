@@ -37,7 +37,7 @@ typedef void *sa_alloc_t(size_t size);
  */
 typedef void sa_free_t(const void *p);
 
-#define sa_mm_fns_align sizeof(void*)*2
+#define sa_mm_fns_align (sizeof(void*)*2)
 
 /**
  * A matched pair of memory allocation and free functions.
@@ -252,6 +252,15 @@ SA_EXPORT int sa_get_address_byte(struct sockaddr *sa, size_t offset);
 SA_EXPORT SA_BOOL sa_set_address_byte(struct sockaddr *sa, size_t offset, uint8_t value);
 
 /**
+ * Allows direct memory access to the address bytes of a socket address. 
+ * @param sa Pointer to a socket address.
+ * @param size Reports the count of bytes that make up the memory region.
+ * @return Null on failure, otherwise a pointer to the address bytes of a socket address.
+ */
+SA_EXPORT const uint8_t* sa_address_bytes(struct sockaddr *sa, size_t* size);
+
+
+/**
  * Gets the name of a scope (network interface) index.
  * @param scope The index of a scope (network interface).
  * @return The name of the scope (network interface).
@@ -272,7 +281,6 @@ SA_EXPORT uint16_t sa_scope_get_index(const char *scope);
  * @return The previous or current memory management functions.
  */
 SA_EXPORT sa_mm_fns_t xch_sa_mm_fns(sa_mm_fns_t *p);
-
 
 #ifdef __cplusplus
 }
