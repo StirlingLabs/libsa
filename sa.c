@@ -1,25 +1,21 @@
 #include "common.h"
 #include "sa.h"
 
-void *default_sa_alloc(size_t size) {
+static void *default_sa_alloc(size_t size) {
     void *p = malloc(size);
     memset(p, 0, size);
     return p;
 }
 
-sa_alloc_t *sa_alloc_fn;
-
-sa_free_t *sa_free_fn;
-
-INLINE void sa_mm_init() {
-    if (sa_alloc_fn == NULL || sa_free_fn == NULL) {
-        sa_alloc_fn = default_sa_alloc;
-        sa_free_fn = (void *) free;
-    }
+static void default_free(const void* ptr) {
+    free((void*)ptr);
 }
 
+sa_alloc_t *sa_alloc_fn = default_sa_alloc;
+
+sa_free_t *sa_free_fn = default_free;
+
 sa_alloc_t *xch_sa_alloc_fn(sa_alloc_t *p) {
-    sa_mm_init();
     sa_alloc_t *old = sa_alloc_fn;
     if (p != NULL)
         sa_alloc_fn = p;
@@ -27,7 +23,6 @@ sa_alloc_t *xch_sa_alloc_fn(sa_alloc_t *p) {
 }
 
 sa_free_t *xch_sa_free_fn(sa_free_t *p) {
-    sa_mm_init();
     sa_free_t *old = sa_free_fn;
     if (p != NULL)
         sa_free_fn = p;
@@ -35,12 +30,10 @@ sa_free_t *xch_sa_free_fn(sa_free_t *p) {
 }
 
 INLINE void *sa_alloc(size_t size) {
-    sa_mm_init();
     return (*sa_alloc_fn)(size);
 }
 
 void sa_free(const void *p) {
-    sa_mm_init();
     if (p != NULL) {
         (*sa_free_fn)(p);
     }
@@ -359,7 +352,7 @@ int _sa_get_ipv4_byte(struct sockaddr_in *sa, size_t offset) {
 }
 
 int _sa_get_ipv6_byte(struct sockaddr_in6 *sa, size_t offset) {
-    if (offset >= sizeof(struct in_addr6)) return -1;
+    if (offset >= sizeof(struct in6_addr)) return -1;
     return ((uint8_t *) &sa->sin6_addr)[offset];
 }
 
@@ -386,7 +379,7 @@ SA_BOOL _sa_set_ipv4_byte(struct sockaddr_in *sa, size_t offset, uint8_t value) 
 }
 
 SA_BOOL _sa_set_ipv6_byte(struct sockaddr_in6 *sa, size_t offset, uint8_t value) {
-    if (offset >= sizeof(struct in_addr6)) return 0;
+    if (offset >= sizeof(struct in6_addr)) return 0;
     ((uint8_t *) &sa->sin6_addr)[offset] = value;
     return 1;
 }
