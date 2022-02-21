@@ -46,7 +46,11 @@ TEST(sa, get_size_unspec) {
 
 TEST(sa, get_size_storage) {
     sockaddr_storage sa;
-    sa.ss_family = (sa_family_t)UINT16_MAX;
+#ifdef HAVE_SOCKADDR_SA_LEN
+    sa.ss_family = UINT8_MAX;
+#else
+    sa.ss_family = UINT16_MAX;
+#endif
 
     auto actual = sa_get_size(reinterpret_cast<sockaddr *>(&sa));
 
