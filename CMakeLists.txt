@@ -13,7 +13,7 @@ endif ()
 
 if (HAVE_SOCKADDR_SA_LEN)
     add_compile_definitions(HAVE_SOCKADDR_SA_LEN=1)
-endif()
+endif ()
 
 add_library(sa sa.c)
 
@@ -31,11 +31,14 @@ install(TARGETS sa
 
 if (WIN32)
     target_link_libraries(sa LINK_PUBLIC wsock32 ws2_32 iphlpapi)
+
+    set_property(TARGET sa PROPERTY
+            MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif ()
 
 if (SA_SKIP_TESTS)
     MESSAGE(WARNING "Tests skipped!")
-else()
+else ()
     enable_testing()
     add_subdirectory(tests)
-endif()
+endif ()
