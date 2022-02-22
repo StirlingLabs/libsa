@@ -15,7 +15,7 @@
 #if _WIN32
 #define SA_EXPORT __declspec(dllexport) extern
 #else
-#define SA_EXPORT extern
+#define SA_EXPORT __attribute__((visibility("default"))) extern
 #endif
 
 #ifdef __cplusplus

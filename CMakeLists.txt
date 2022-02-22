@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 
 project(sa)
 
+include(CheckIPOSupported)
+check_ipo_supported(RESULT HAVE_IPO_SUPPORT OUTPUT IPO_SUPPORT_ERROR)
+
 include(CheckStructHasMember)
 
 option(SA_SKIP_TESTS "Skip building tests" OFF)
@@ -17,8 +20,17 @@ endif ()
 
 add_library(sa sa.c)
 
+if( HAVE_IPO_SUPPORT )
+    message(STATUS "IPO enabled")
+    set_property(TARGET sa PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+else()
+    message(STATUS "IPO not supported: <${IPO_SUPPORT_ERROR}>")
+endif()
+
 set_property(TARGET sa PROPERTY C_STANDARD 11)
 set_property(TARGET sa PROPERTY C_STANDARD_REQUIRED OFF)
+set_property(TARGET sa PROPERTY C_VISIBILITY_PRESET hidden)
+set_property(TARGET sa PROPERTY VISIBILITY_INLINES_HIDDEN ON)
 
 set_target_properties(sa PROPERTIES PUBLIC_HEADER sa.h)
 
