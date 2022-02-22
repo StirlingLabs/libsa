@@ -1,0 +1,25 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+    linux:
+        name: ubuntu
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: configure and build shared library
+              run: |
+                  mkdir build
+                  cd build
+                  cmake .. -DCMAKE_BUILD_TYPE=Release
+                  cmake --build .
+                  ctest
+            - uses: actions/upload-artifact@v2
+              name: libsa-linux
+              with:
+                  name: libsa-linux
+                  path: |
+                      build/libsa.so
+                      sa.h
+                  if-no-files-found: error
