@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "sockaddr.Net.Tests": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
