@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sockaddr.Net", "sockaddr.Net\sockaddr.Net.csproj", "{F79DAB5F-38C6-4A4B-AD7A-302B36B61ADA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sockaddr.Net.Tests", "sockaddr.Net.Tests\sockaddr.Net.Tests.csproj", "{F463280B-EB1F-44AE-A94E-FF13D50B3EE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F79DAB5F-38C6-4A4B-AD7A-302B36B61ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F79DAB5F-38C6-4A4B-AD7A-302B36B61ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F79DAB5F-38C6-4A4B-AD7A-302B36B61ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F79DAB5F-38C6-4A4B-AD7A-302B36B61ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F463280B-EB1F-44AE-A94E-FF13D50B3EE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F463280B-EB1F-44AE-A94E-FF13D50B3EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F463280B-EB1F-44AE-A94E-FF13D50B3EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F463280B-EB1F-44AE-A94E-FF13D50B3EE0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
