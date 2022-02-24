@@ -12,7 +12,6 @@ defaults:
 jobs:
     linux:
         name: Linux
-        needs: dupe_check
         runs-on: ubuntu-20.04
         steps:
         -   uses: actions/checkout@v2
@@ -36,7 +35,6 @@ jobs:
     
     macos:
         name: Mac
-        needs: dupe_check
         runs-on: macos-11
         steps:
         -   uses: actions/checkout@v2
@@ -60,7 +58,6 @@ jobs:
     
     windows:
         name: Windows
-        needs: dupe_check
         runs-on: windows-2022
         steps:
         -   uses: actions/checkout@v2
