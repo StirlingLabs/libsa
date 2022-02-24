@@ -62,7 +62,7 @@ sa_mm_fns_t xch_sa_mm_fns(sa_mm_fns_t *p) {
 
 void *sa_alloc(size_t size) {
     if (size == 0) return NULL;
-    sa_mm_fns_t mm = read_mm_fns(&sa_mm_fns);
+    sa_mm_fns_t mm = read_mm_fns();
     void *p = (*mm.alloc)(size + sizeof(sa_alloc_header_t));
     sa_alloc_header_t *h = p;
     h->cookie = sa_alloc_cookie;
