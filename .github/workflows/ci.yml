@@ -1,4 +1,4 @@
-name: Build and Test
+name: Integration
 
 on: [ push, pull_request ]
 
@@ -20,7 +20,7 @@ jobs:
             uses: fkirc/skip-duplicate-actions@master
             with:
                 skip_after_successful_duplicate: 'true'
-                paths_ignore: '["**/README.md", ".idea/**", ".editorconfig", ".git*", "docs/**"]'
+                paths_ignore: '["**/README.md", ".idea/**", ".editorconfig", ".git*", "docs/**", ".github/**"]'
         -   name: Full checkout
             if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
             uses: actions/checkout@v2
