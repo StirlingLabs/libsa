@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../common.h"
-#include "../sa.h"
+#include "common.h"
+#include "sa.h"
 
 TEST(sa, set_address_byte_ipv4) {
     sockaddr_in sa;

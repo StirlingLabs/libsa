@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../common.h"
-#include "../sa.h"
+#include "common.h"
+#include "sa.h"
 
 bool sa_free_wrap_called;
 sa_mm_fns_t old_mm;

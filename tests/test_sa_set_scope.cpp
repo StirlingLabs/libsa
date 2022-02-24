@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../common.h"
-#include "../sa.h"
+#include "common.h"
+#include "sa.h"
 
 TEST(sa, set_port_ipv4_1) {
     sockaddr_in sa;

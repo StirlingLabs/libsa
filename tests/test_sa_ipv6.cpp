@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../common.h"
-#include "../sa.h"
+#include "common.h"
+#include "sa.h"
 
 TEST(sa, ipv6) {
     const char *s = "::ffff:0102:0304";

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../common.h"
-#include "../sa.h"
+#include "common.h"
+#include "sa.h"
 
 
 TEST(sa, address_to_str_ipv4) {

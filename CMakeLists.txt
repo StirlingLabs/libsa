@@ -18,7 +18,9 @@ if (HAVE_SOCKADDR_SA_LEN)
     add_compile_definitions(HAVE_SOCKADDR_SA_LEN=1)
 endif ()
 
-add_library(sa sa.c)
+file(GLOB sa_sources CONFIGURE_DEPENDS "src/*.c")
+
+add_library(sa ${sa_sources})
 
 if( HAVE_IPO_SUPPORT )
     message(STATUS "IPO enabled")
@@ -32,9 +34,8 @@ set_property(TARGET sa PROPERTY C_STANDARD_REQUIRED OFF)
 set_property(TARGET sa PROPERTY C_VISIBILITY_PRESET hidden)
 set_property(TARGET sa PROPERTY VISIBILITY_INLINES_HIDDEN ON)
 
-set_target_properties(sa PROPERTIES PUBLIC_HEADER sa.h)
-
-target_include_directories(sa PRIVATE .)
+set_target_properties(sa PROPERTIES PUBLIC_HEADER include/sa.h)
+target_include_directories(sa PRIVATE ./include ./)
 
 include(GNUInstallDirs)
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../common.h"
-#include "../sa.h"
+#include "common.h"
+#include "sa.h"
 
 TEST(sa, has_len_field) {
 #ifdef HAVE_SOCKADDR_SA_LEN

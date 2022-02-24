@@ -1,42 +1,18 @@
-name: Build and Test
+name: Release Build & Test
 
-on: [ push, pull_request ]
+on:
+    push:
+        tags:
+        - 'v*'
 
 defaults:
     run:
         shell: bash
 
 jobs:
-    skip_check:
-        name: Skip Run Check
-        continue-on-error: true
-        runs-on: ubuntu-latest
-        outputs:
-            should_skip: ${{ steps.skip_check.outputs.should_skip }}
-            is_not_release: ${{ steps.release_check.outputs.is_not_release }}
-        steps:
-        -   name: Check if duplicate action
-            id: skip_check
-            uses: fkirc/skip-duplicate-actions@master
-            with:
-                skip_after_successful_duplicate: 'true'
-                paths_ignore: '["**/README.md", ".idea/**", ".editorconfig", ".git*", "docs/**"]'
-        -   name: Full checkout
-            if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-            uses: actions/checkout@v2
-            with:
-                fetch-depth: 0
-        -   name: Check if should be release / has version tag
-            id: release_check
-            if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-            run: |
-                git describe --exact-match --match='v*' --abbrev=0 --tags ${{ github.sha }} 2>/dev/null \
-                || echo "::set-output name=is_not_release::true"
-
     linux:
         name: Linux
-        needs: skip_check
-        if: ${{ (needs.skip_check.outputs.should_skip != 'true') && (needs.skip_check.outputs.is_not_release == 'true') }}
+        needs: dupe_check
         runs-on: ubuntu-20.04
         steps:
         -   uses: actions/checkout@v2
@@ -60,8 +36,7 @@ jobs:
     
     macos:
         name: Mac
-        needs: skip_check
-        if: ${{ (needs.skip_check.outputs.should_skip != 'true') && (needs.skip_check.outputs.is_not_release == 'true') }}
+        needs: dupe_check
         runs-on: macos-11
         steps:
         -   uses: actions/checkout@v2
@@ -85,8 +60,7 @@ jobs:
     
     windows:
         name: Windows
-        needs: skip_check
-        if: ${{ (needs.skip_check.outputs.should_skip != 'true') && (needs.skip_check.outputs.is_not_release == 'true') }}
+        needs: dupe_check
         runs-on: windows-2022
         steps:
         -   uses: actions/checkout@v2
@@ -107,3 +81,23 @@ jobs:
                 name: libsa-win-x64
                 path: build/Release/sa.dll
                 if-no-files-found: error
+    
+    create_release:
+        runs-on: ubuntu-latest
+        needs: [ linux, macos, windows ]
+        steps:
+        -   uses: actions/download-artifact@v2
+            with:
+                path: artifacts
+        -   name: Download Public Header
+            run: |
+                curl -H "Authorization: token ${{ github.token }}" \
+                  -H 'Accept: application/vnd.github.v3.raw' \
+                  -o artifacts/sa.h \
+                  -L ${{ github.api_url }}/repos/${{ github.repository }}/contents/sa.h?ref=${{ github.ref_name }}
+        -   name: Create Release
+            uses: softprops/action-gh-release@v0.1.12
+            with:
+                name: Utilities.Net
+                files: |
+                    artifacts/*.*

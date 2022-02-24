@@ -12,6 +12,7 @@ include(GoogleTest)
 function(define_gtest test_name)
     add_executable(${test_name} ${test_name}.cpp)
     target_link_libraries(${test_name} sa gtest_main)
+    target_include_directories(${test_name} PRIVATE ../include ../src ./)
     if (WIN32)
         add_custom_command(TARGET ${test_name} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -32,7 +33,7 @@ function(define_gtest test_name)
 endfunction()
 
 
-file(GLOB test_sources "test_*.cpp")
+file(GLOB test_sources CONFIGURE_DEPENDS "test_*.cpp")
 foreach (test_source ${test_sources})
     get_filename_component(test_name ${test_source} NAME_WLE)
     define_gtest(${test_name})
