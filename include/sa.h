@@ -215,6 +215,27 @@ SA_EXPORT SA_BOOL sa_set_family(struct sockaddr *sa, int family);
 SA_EXPORT int sa_get_family(const struct sockaddr *sa);
 
 /**
+ * Gets the platform specific address family of an unspecified (AF_UNSPEC) socket address.
+ * @attention This is provided for advanced use at the user's discretion.
+ * @return -1 on failure, otherwise the platform specific address family value.
+ */
+SA_EXPORT int sa_get_family_unspec();
+
+/**
+ * Gets the platform specific address family of an IPv4 (AF_INET) socket address.
+ * @attention This is provided for advanced use at the user's discretion.
+ * @return -1 on failure, otherwise the platform specific address family value.
+ */
+SA_EXPORT int sa_get_family_ipv4();
+
+/**
+ * Gets the platform specific address family of an IPv6 (AF_INET6) socket address.
+ * @attention This is provided for advanced use at the user's discretion.
+ * @return -1 on failure, otherwise the platform specific address family value.
+ */
+SA_EXPORT int sa_get_family_ipv6();
+
+/**
  * Detects if the socket address structure has a length field.
  * @attention This is provided for advanced use at the user's discretion.
  * @return Non-zero when true.

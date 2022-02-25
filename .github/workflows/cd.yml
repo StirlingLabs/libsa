@@ -81,7 +81,7 @@ jobs:
     
     create_release:
         name: Create Release
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-20.04
         needs: [ linux, macos, windows ]
         steps:
         -   uses: actions/download-artifact@v2

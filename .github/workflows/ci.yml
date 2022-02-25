@@ -10,7 +10,7 @@ jobs:
     skip_check:
         name: Skip Run Check
         continue-on-error: true
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-20.04
         outputs:
             should_skip: ${{ steps.skip_check.outputs.should_skip }}
             is_not_release: ${{ steps.release_check.outputs.is_not_release }}

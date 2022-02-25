@@ -22,3 +22,15 @@ SA_BOOL sa_has_len_field(void) {
 ptrdiff_t sa_family_offset(void) {
     return offsetof(struct sockaddr, sa_family);
 }
+
+int sa_get_family_unspec() {
+    return AF_UNSPEC;
+}
+
+int sa_get_family_ipv4() {
+    return AF_INET;
+}
+
+int sa_get_family_ipv6() {
+    return AF_INET6;
+}
