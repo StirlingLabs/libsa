@@ -28,7 +28,7 @@ jobs:
             uses: fkirc/skip-duplicate-actions@master
             with:
                 skip_after_successful_duplicate: 'true'
-                paths_ignore: '["**/README.md", ".idea/**", ".editorconfig", ".git*", "docs/**", ".github/**"]'
+                paths_ignore: '["**/README.md", ".idea/**", ".editorconfig", ".git*", "docs/**", ".github/**", "**/Doxyfile"]'
         -   name: Full checkout
             if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
             uses: actions/checkout@v2
