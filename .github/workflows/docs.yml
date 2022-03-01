@@ -4,6 +4,16 @@ on:
     push:
         tags:
         - 'v*'
+    workflow_dispatch:
+        inputs:
+            tag:
+                description: 'Tag (Release Version)'
+                required: true
+                type: string
+            commit:
+                description: 'Commit Hash'
+                required: false
+                type: string
 
 defaults:
     run:
@@ -32,6 +42,10 @@ jobs:
                 name: libsa-linux-glibc
                 path: build/libsa.so
                 if-no-files-found: error
+        -   name: Update Documentation
+            uses: DenverCoder1/doxygen-github-pages-action@v1
+            with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
     
     macos:
         name: Mac
@@ -99,3 +113,11 @@ jobs:
                 name: libsa
                 files: |
                     artifacts/**
+        -   name: Generate Documentation
+            uses: mattnotmitt/doxygen-action@v1.9.3
+        -   name: Commit Documentation
+            uses: StirlingLabs/BranchStorageAction@main
+            with:
+                src: docs/html/*
+                dst: ${{ github.ref_name }}/
+                storage-branch: gh-pages
