@@ -1,9 +1,21 @@
-name: Release
+name: Documentation
 
 on:
     push:
         tags:
         - 'v*'
+
+    workflow_call:
+        inputs:
+            tag:
+                description: 'Tag (Release Version)'
+                required: true
+                type: string
+            commit:
+                description: 'Commit Hash'
+                required: false
+                type: string
+
     workflow_dispatch:
         inputs:
             tag:
@@ -20,104 +32,18 @@ defaults:
         shell: bash
 
 jobs:
-    linux:
-        name: Linux
+    generate_docs:
+        name: Generate Documentation
         runs-on: ubuntu-20.04
         steps:
         -   uses: actions/checkout@v2
-        -   name: Configure
-            run: |
-                mkdir build
-                cd build
-                cmake .. -DCMAKE_BUILD_TYPE=Release
-        -   name: Make
-            working-directory: build
-            run: cmake --build .
-        -   name: Test
-            working-directory: build
-            run: ctest
-        -   uses: actions/upload-artifact@v2
-            name: Artifact
             with:
-                name: libsa-linux-glibc
-                path: build/libsa.so
-                if-no-files-found: error
-        -   name: Update Documentation
-            uses: DenverCoder1/doxygen-github-pages-action@v1
-            with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-    
-    macos:
-        name: Mac
-        runs-on: macos-11
-        steps:
-        -   uses: actions/checkout@v2
-        -   name: Configure
-            run: |
-                mkdir build
-                cd build
-                cmake .. -DCMAKE_BUILD_TYPE=Release
-        -   name: Make
-            working-directory: build
-            run: cmake --build .
-        -   name: Test
-            working-directory: build
-            run: ctest
-        -   uses: actions/upload-artifact@v2
-            name: Artifact
-            with:
-                name: libsa-macos
-                path: build/libsa.dylib
-                if-no-files-found: error
-    
-    windows:
-        name: Windows
-        runs-on: windows-2022
-        steps:
-        -   uses: actions/checkout@v2
-        -   name: Configure
-            run: |
-                mkdir build
-                cd build
-                cmake .. -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release
-        -   name: Make
-            working-directory: build
-            run: cmake --build . --config Release
-        -   name: Test
-            working-directory: build
-            run: ctest
-        -   uses: actions/upload-artifact@v2
-            name: Artifact
-            with:
-                name: libsa-win-x64
-                path: build/Release/sa.dll
-                if-no-files-found: error
-    
-    create_release:
-        name: Create Release
-        runs-on: ubuntu-20.04
-        needs: [ linux, macos, windows ]
-        steps:
-        -   uses: actions/download-artifact@v2
-            with:
-                path: artifacts
-        -   name: Download Public Header
-            run: |
-                curl -H "Authorization: token ${{ github.token }}" \
-                  -H 'Accept: application/vnd.github.v3.raw' \
-                  -o artifacts/sa.h \
-                  -L ${{ github.api_url }}/repos/${{ github.repository }}/contents/sa.h?ref=${{ github.ref_name }}
-        -   name: Create Release
-            uses: softprops/action-gh-release@v0.1.12
-            with:
-                name: libsa
-                files: |
-                    artifacts/**
+                ref: ${{ (github.event.inputs || inputs).commit || github.sha }}
         -   name: Generate Documentation
             uses: mattnotmitt/doxygen-action@v1.9.3
         -   name: Commit Documentation
             uses: StirlingLabs/BranchStorageAction@main
             with:
                 src: docs/html/*
-                dst: ${{ github.ref_name }}/
+                dst: ${{ (github.event.inputs || inputs).tag || github.ref_name }}/
                 storage-branch: gh-pages
