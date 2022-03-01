@@ -12,6 +12,10 @@
 
 #endif
 
+/**
+ * @public
+ * @brief SA_BOOL booleans are non-zero integers for true, zero for false.
+ */
 #if _WIN32
 #define SA_EXPORT __declspec(dllexport) extern
 #else
@@ -22,17 +26,22 @@
 extern "C" {
 #endif
 
+/**
+ * @public
+ * @brief SA_BOOL booleans are non-zero integers for true, zero for false.
+ */
 #define SA_BOOL int
 
-
 /**
- * A memory allocation function that can be used by this implementation.
+ * @public
+ * @brief A memory allocation function that can be used by this implementation.
  * @param size A size in bytes to allocate.
  */
 typedef void *sa_alloc_t(size_t size);
 
 /**
- * A memory freeing function that can be used by this implementation.
+ * @public
+ * @brief A memory freeing function that can be used by this implementation.
  * @param p A pointer to memory to be freed.
  */
 typedef void sa_free_t(const void *p);
@@ -40,7 +49,8 @@ typedef void sa_free_t(const void *p);
 #define sa_mm_fns_align (sizeof(void*)*2)
 
 /**
- * A matched pair of memory allocation and free functions.
+ * @public
+ * @brief A matched pair of memory allocation and free functions.
  */
 typedef struct sa_mm_fns {
     alignas(sa_mm_fns_align) sa_alloc_t * alloc;
@@ -54,35 +64,40 @@ static_assert(alignof(sa_mm_fns_t) == sa_mm_fns_align,
         "must be exactly the alignment of 2 pointers");
 
 /**
- * Identifies socket addresses that are AF_UNSPEC.
+ * @public
+ * @brief Identifies socket addresses that are AF_UNSPEC.
  * @param sa Pointer to a socket address.
  * @return non-zero if the @param sa is AF_UNSPEC.
  */
 SA_EXPORT SA_BOOL sa_is_unspec(struct sockaddr *sa);
 
 /**
- * Identifies socket addresses that are AF_INET.
+ * @public
+ * @brief Identifies socket addresses that are AF_INET.
  * @param sa Pointer to a socket address.
  * @return non-zero if the @param sa is AF_INET.
  */
 SA_EXPORT SA_BOOL sa_is_ipv4(struct sockaddr *sa);
 
 /**
- * Identifies socket addresses that are AF_INET6.
+ * @public
+ * @brief Identifies socket addresses that are AF_INET6.
  * @param sa Pointer to a socket address.
  * @return non-zero if the @param sa is AF_INET6.
  */
 SA_EXPORT SA_BOOL sa_is_ipv6(struct sockaddr *sa);
 
 /**
- * Gets the copyable size of the socket address.
+ * @public
+ * @brief Gets the copyable size of the socket address.
  * @param sa Pointer to a socket address.
  * @return Zero if unknown, otherwise the relevant copyable size.
  */
 SA_EXPORT size_t sa_get_size(struct sockaddr *sa);
 
 /**
- * Gets the copyable size of a socket address of a given family.
+ * @public
+ * @brief Gets the copyable size of a socket address of a given family.
  * @attention This is provided for advanced use at the user's discretion.
  * @param family A platform specific address family.
  * @return The size of a sockaddr_storage structure if unknown, otherwise the relevant copyable size.
@@ -90,35 +105,40 @@ SA_EXPORT size_t sa_get_size(struct sockaddr *sa);
 SA_EXPORT size_t sa_get_size_by_family(uint16_t family);
 
 /**
- * Gets the copyable size of a sockaddr_storage structure.
+ * @public
+ * @brief Gets the copyable size of a sockaddr_storage structure.
  * @attention The return value may be treated as constant.
  * @return The copyable size.
  */
 SA_EXPORT size_t sa_get_size_storage();
 
 /**
- * Gets a generally safe copyable size of an unspecified family sockaddr structure.
+ * @public
+ * @brief Gets a generally safe copyable size of an unspecified family sockaddr structure.
  * @attention The return value may be treated as constant.
  * @return The copyable size.
  */
 SA_EXPORT size_t sa_get_size_unspec();
 
 /**
- * Gets the copyable size of a sockaddr_in structure.
+ * @public
+ * @brief Gets the copyable size of a sockaddr_in structure.
  * @attention The return value may be treated as constant.
  * @return The copyable size.
  */
 SA_EXPORT size_t sa_get_size_ipv4();
 
 /**
- * Gets the copyable size of a sockaddr_in6 structure.
+ * @public
+ * @brief Gets the copyable size of a sockaddr_in6 structure.
  * @attention The return value may be treated as constant.
  * @return The copyable size.
  */
 SA_EXPORT size_t sa_get_size_ipv6();
 
 /**
- * Converts the address within the socket address to a string.
+ * @public
+ * @brief Converts the address within the socket address to a string.
  * @attention Caller should use sa_free(s) to clean up.
  * @param sa Pointer to a socket address.
  * @return NULL if not possible, otherwise a pointer to a string.
@@ -126,7 +146,8 @@ SA_EXPORT size_t sa_get_size_ipv6();
 SA_EXPORT const char *sa_address_to_str(struct sockaddr *sa);
 
 /**
- * Creates an AF_UNSPEC socket address.
+ * @public
+ * @brief Creates an AF_UNSPEC socket address.
  * @attention Caller should use sa_free(sa) to clean up.
  * @param port A port number to use.
  * @return NULL on failure, otherwise a pointer to the created socket address.
@@ -134,7 +155,8 @@ SA_EXPORT const char *sa_address_to_str(struct sockaddr *sa);
 SA_EXPORT struct sockaddr *sa_unspec(uint16_t port);
 
 /**
- * Creates an AF_INET socket address.
+ * @public
+ * @brief Creates an AF_INET socket address.
  * @attention Caller should use sa_free(sa) to clean up.
  * @param str A IPv4 string to parse.
  * @param port A port number to use.
@@ -143,7 +165,8 @@ SA_EXPORT struct sockaddr *sa_unspec(uint16_t port);
 SA_EXPORT struct sockaddr *sa_ipv4(const char *str, uint16_t port);
 
 /**
- * Creates an AF_INET socket address.
+ * @public
+ * @brief Creates an AF_INET socket address.
  * @attention Caller should use sa_free(sa) to clean up.
  * @param address A IPv4 address in network byte order.
  * @param port A port number to use.
@@ -152,7 +175,8 @@ SA_EXPORT struct sockaddr *sa_ipv4(const char *str, uint16_t port);
 SA_EXPORT struct sockaddr *sa_ipv4_bin(const uint8_t *address, uint16_t port);
 
 /**
- * Creates an AF_INET6 socket address.
+ * @public
+ * @brief Creates an AF_INET6 socket address.
  * @attention Caller should use sa_free(sa) to clean up.
  * @param str A IPv6 string to parse.
  * @param port A port number to use.
@@ -161,7 +185,8 @@ SA_EXPORT struct sockaddr *sa_ipv4_bin(const uint8_t *address, uint16_t port);
 SA_EXPORT struct sockaddr *sa_ipv6(const char *str, uint16_t port);
 
 /**
- * Creates an AF_INET6 socket address.
+ * @public
+ * @brief Creates an AF_INET6 socket address.
  * @attention Caller should use sa_free(sa) to clean up.
  * @param address A IPv6 address in network byte order.
  * @param port A port number to use.
