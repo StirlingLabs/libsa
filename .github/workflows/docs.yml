@@ -44,6 +44,7 @@ jobs:
         -   name: Commit Documentation
             uses: StirlingLabs/BranchStorageAction@main
             with:
+                prune: true
                 src: docs/html/*
                 dst: ${{ (github.event.inputs || inputs).tag || github.ref_name }}/
                 storage-branch: gh-pages
