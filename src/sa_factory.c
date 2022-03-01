@@ -26,6 +26,18 @@ struct sockaddr *sa_ipv4(const char *str, uint16_t port) {
     return (struct sockaddr *) sa;
 }
 
+struct sockaddr *sa_ipv4_bin(const uint8_t *address, uint16_t port) {
+    if (address == NULL) return NULL;
+
+    struct sockaddr_in *sa = sa_alloc(sizeof(struct sockaddr_in));
+    if (sa == NULL) return NULL;
+
+    sa->sin_family = AF_INET;
+    sa->sin_addr = *(struct in_addr*)address;
+    sa->sin_port = htons(port);
+    return (struct sockaddr *) sa;
+}
+
 struct sockaddr *sa_ipv6(const char *str, uint16_t port) {
     if (str == NULL) return NULL;
 
@@ -37,6 +49,19 @@ struct sockaddr *sa_ipv6(const char *str, uint16_t port) {
         return NULL;
     }
     sa->sin6_family = AF_INET6;
+    sa->sin6_port = htons(port);
+    return (struct sockaddr *) sa;
+}
+
+
+struct sockaddr *sa_ipv6_bin(const uint8_t *address, uint16_t port) {
+    if (address == NULL) return NULL;
+
+    struct sockaddr_in6 *sa = sa_alloc(sizeof(struct sockaddr_in6));
+    if (sa == NULL) return NULL;
+
+    sa->sin6_family = AF_INET6;
+    sa->sin6_addr = *(struct in6_addr*)address;
     sa->sin6_port = htons(port);
     return (struct sockaddr *) sa;
 }

@@ -143,6 +143,15 @@ SA_EXPORT struct sockaddr *sa_unspec(uint16_t port);
 SA_EXPORT struct sockaddr *sa_ipv4(const char *str, uint16_t port);
 
 /**
+ * Creates an AF_INET socket address.
+ * @attention Caller should use sa_free(sa) to clean up.
+ * @param address A IPv4 address in network byte order.
+ * @param port A port number to use.
+ * @return NULL on failure, otherwise a pointer to the created socket address.
+ */
+SA_EXPORT struct sockaddr *sa_ipv4_bin(const uint8_t *address, uint16_t port);
+
+/**
  * Creates an AF_INET6 socket address.
  * @attention Caller should use sa_free(sa) to clean up.
  * @param str A IPv6 string to parse.
@@ -150,6 +159,15 @@ SA_EXPORT struct sockaddr *sa_ipv4(const char *str, uint16_t port);
  * @return NULL on failure, otherwise a pointer to the created socket address.
  */
 SA_EXPORT struct sockaddr *sa_ipv6(const char *str, uint16_t port);
+
+/**
+ * Creates an AF_INET6 socket address.
+ * @attention Caller should use sa_free(sa) to clean up.
+ * @param address A IPv6 address in network byte order.
+ * @param port A port number to use.
+ * @return NULL on failure, otherwise a pointer to the created socket address.
+ */
+SA_EXPORT struct sockaddr *sa_ipv6_bin(const uint8_t *address, uint16_t port);
 
 /**
  * Gets the port of a socket address.
