@@ -1,6 +1,14 @@
 name: Integration
 
-on: [ push, pull_request ]
+on:
+    pull_request:
+        branches:
+        - '**'
+        - '!gh-pages'
+    push:
+        branches:
+        - '**'
+        - '!gh-pages'
 
 defaults:
     run:
