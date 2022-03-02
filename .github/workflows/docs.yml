@@ -36,11 +36,27 @@ jobs:
         name: Generate Documentation
         runs-on: ubuntu-20.04
         steps:
-        -   uses: actions/checkout@v2
+        -   uses: actions/checkout@v3
             with:
                 ref: ${{ (github.event.inputs || inputs).commit || github.sha }}
         -   name: Generate Documentation
             uses: mattnotmitt/doxygen-action@v1.9.3
+        -   name: List Releases
+            uses: octokit/request-action@v2.x
+            id: list_releases
+            with:
+                route: GET /repos/${{ github.repository }}/releases
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        -   name: Print releases
+            run: |
+                cat >releases.json <<'EOL'
+                ${{ steps.list_releases.outputs.data }}
+                EOL
+                echo """${{ steps.list_releases.outputs.data }}""" > releases2.json
+                ls -la
+                cat releases.json
+                jq releases.json | .tag_name
         -   name: Commit Documentation
             uses: StirlingLabs/BranchStorageAction@main
             with:
