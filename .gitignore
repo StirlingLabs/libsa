@@ -388,3 +388,5 @@ FodyWeavers.xsd
 /coverage
 
 .DS_Store
+docs
+Doxyfile.bak
