@@ -2,6 +2,18 @@
 #include "sa.h"
 #include "sa_mm.h"
 
+/**
+ * @file
+ * @brief Socket address factory.
+ */
+
+/**
+ * @brief Creates an AF_UNSPEC socket address.
+ * @attention Caller should use sa_free(sa) to clean up.
+ * @param port A port number to use.
+ * @return NULL on failure, otherwise a pointer to the created socket address.
+ * @public
+ */
 struct sockaddr *sa_unspec(uint16_t port) {
     struct sockaddr_in6 *sa = sa_alloc(sizeof(struct sockaddr_in6));
     if (sa == NULL) return NULL;
@@ -11,6 +23,14 @@ struct sockaddr *sa_unspec(uint16_t port) {
     return (struct sockaddr *) sa;
 }
 
+/**
+ * @brief Creates an AF_INET socket address.
+ * @attention Caller should use sa_free(sa) to clean up.
+ * @param str A IPv4 string to parse.
+ * @param port A port number to use.
+ * @return NULL on failure, otherwise a pointer to the created socket address.
+ * @public
+ */
 struct sockaddr *sa_ipv4(const char *str, uint16_t port) {
     if (str == NULL) return NULL;
 
@@ -26,6 +46,14 @@ struct sockaddr *sa_ipv4(const char *str, uint16_t port) {
     return (struct sockaddr *) sa;
 }
 
+/**
+ * @brief Creates an AF_INET socket address.
+ * @attention Caller should use sa_free(sa) to clean up.
+ * @param address A IPv4 address in network byte order.
+ * @param port A port number to use.
+ * @return NULL on failure, otherwise a pointer to the created socket address.
+ * @public
+ */
 struct sockaddr *sa_ipv4_bin(const uint8_t *address, uint16_t port) {
     if (address == NULL) return NULL;
 
@@ -38,6 +66,14 @@ struct sockaddr *sa_ipv4_bin(const uint8_t *address, uint16_t port) {
     return (struct sockaddr *) sa;
 }
 
+/**
+ * @brief Creates an AF_INET6 socket address.
+ * @attention Caller should use sa_free(sa) to clean up.
+ * @param str A IPv6 string to parse.
+ * @param port A port number to use.
+ * @return NULL on failure, otherwise a pointer to the created socket address.
+ * @public
+ */
 struct sockaddr *sa_ipv6(const char *str, uint16_t port) {
     if (str == NULL) return NULL;
 
@@ -53,7 +89,14 @@ struct sockaddr *sa_ipv6(const char *str, uint16_t port) {
     return (struct sockaddr *) sa;
 }
 
-
+/**
+ * @brief Creates an AF_INET6 socket address.
+ * @attention Caller should use sa_free(sa) to clean up.
+ * @param address A IPv6 address in network byte order.
+ * @param port A port number to use.
+ * @return NULL on failure, otherwise a pointer to the created socket address.
+ * @public
+ */
 struct sockaddr *sa_ipv6_bin(const uint8_t *address, uint16_t port) {
     if (address == NULL) return NULL;
 

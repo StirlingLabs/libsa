@@ -1,7 +1,14 @@
 #include "common.h"
 #include "sa.h"
 #include "sa_mm.h"
+/**
+ * @file
+ * @brief Returns socket address as string.
+*/
 
+/**
+ * @private
+ */
 INLINE static const char *_sa_unspec_to_str() {
     char *s = sa_alloc(2);
     if (s == NULL) return NULL;
@@ -9,6 +16,9 @@ INLINE static const char *_sa_unspec_to_str() {
     return s;
 }
 
+/**
+ * @private
+ */
 INLINE static const char *_sa_ipv4_to_str(struct sockaddr_in *sa) {
     char *s = sa_alloc(INET_ADDRSTRLEN);
     if (s == NULL) return NULL;
@@ -21,6 +31,9 @@ INLINE static const char *_sa_ipv4_to_str(struct sockaddr_in *sa) {
 }
 
 
+/**
+ * @private
+ */
 INLINE static const char *_sa_ipv6_to_str(struct sockaddr_in6 *sa) {
     char *s = sa_alloc(INET6_ADDRSTRLEN);
     if (s == NULL) return NULL;
@@ -32,6 +45,13 @@ INLINE static const char *_sa_ipv6_to_str(struct sockaddr_in6 *sa) {
     return s;
 }
 
+/**
+ * @brief Converts the address within the socket address to a string.
+ * @attention Caller should use sa_free(s) to clean up.
+ * @param sa Pointer to a socket address.
+ * @return NULL if not possible, otherwise a pointer to a string.
+ * @public
+ */
 const char *sa_address_to_str(struct sockaddr *sa) {
     if (sa == NULL) return NULL;
 
