@@ -35,9 +35,6 @@ static_assert(alignof(intptr2_t) == sizeof(intptr_t) * 2, "must be the alignment
 
 #include <intrin.h>
 
-/**
- * @internal
- */
 __forceinline
 bool cas(intptr2_t *target, intptr2_t *comparand, intptr2_t *exchange) {
     intptr2_t desired = *exchange;
@@ -57,9 +54,6 @@ bool cas(intptr2_t *target, intptr2_t *comparand, intptr2_t *exchange) {
 #endif
 }
 
-/**
- * @internal
- */
 __forceinline
 intptr2_t cas_read(intptr2_t *target) {
     intptr2_t actual = {0};
@@ -85,18 +79,12 @@ intptr2_t cas_read(intptr2_t *target) {
 
 #include <stdatomic.h>
 
-/**
- * @internal
- */
 __attribute__((always_inline, flatten)) inline
 bool cas(intptr2_t * target, intptr2_t * comparand, intptr2_t * exchange) {
     intptr2_t desired = *comparand;
     return atomic_compare_exchange_strong(target, &desired, *exchange);
 }
 
-/**
- * @internal
- */
 __attribute__((always_inline, flatten)) inline
 intptr2_t cas_read(intptr2_t * target) {
     return atomic_load(target);
@@ -108,9 +96,6 @@ intptr2_t cas_read(intptr2_t * target) {
 
 // gcc, clang
 // compare: atomic_compare_exchange_weak, atomic_compare_exchange_strong
-/**
- * @internal
- */
 __attribute__((always_inline, flatten)) inline
 bool cas(intptr2_t *target, intptr2_t *comparand, intptr2_t *exchange) {
 #ifdef __aarch64__
@@ -190,9 +175,6 @@ bool cas(intptr2_t *target, intptr2_t *comparand, intptr2_t *exchange) {
 #endif
 }
 
-/**
- * @internal
- */
 __attribute__((always_inline, flatten)) inline
 intptr2_t cas_read(intptr2_t * target) {
 #ifdef __aarch64__
