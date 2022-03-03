@@ -72,21 +72,21 @@ static_assert(alignof(sa_mm_fns_t) == sa_mm_fns_align,
 /*!
  * @brief Identifies socket addresses that are AF_UNSPEC.
  * @param[in] sa Pointer to a socket address.
- * @return non-zero if the @param sa is AF_UNSPEC.
+ * @return non-zero if the sa is AF_UNSPEC.
  * */
 SA_EXPORT SA_BOOL sa_is_unspec(struct sockaddr *sa);
 
 /*!
  * @brief Identifies socket addresses that are AF_INET.
  * @param[in] sa Pointer to a socket address.
- * @return non-zero if the @param sa is AF_INET.
+ * @return non-zero if the sa is AF_INET.
  * */
 SA_EXPORT SA_BOOL sa_is_ipv4(struct sockaddr *sa);
 
 /*!
  * @brief Identifies socket addresses that are AF_INET6.
  * @param[in] sa Pointer to a socket address.
- * @return non-zero if the @param sa is AF_INET6.
+ * @return non-zero if the sa is AF_INET6.
  * */
 SA_EXPORT SA_BOOL sa_is_ipv6(struct sockaddr *sa);
 
@@ -195,8 +195,8 @@ SA_EXPORT int sa_get_port(struct sockaddr *sa);
 
 /*!
  * @brief Sets the port of a socket address.
- * @param sa Pointer to a socket address.
- * @param port A port number to use.
+ * @param[in] sa Pointer to a socket address.
+ * @param[in] port A port number to use.
  * @return Non-zero on success.
  * */
 SA_EXPORT SA_BOOL sa_set_port(struct sockaddr *sa, uint16_t port);
