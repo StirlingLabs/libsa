@@ -6,10 +6,14 @@
 
 #ifdef __cplusplus
 
+#include <cstddef>
 #include <cstdint>
+#include <cstdalign>
+#include <cassert>
 
 #else
 
+#include <stddef.h>
 #include <stdint.h>
 #include <stdalign.h>
 #include <assert.h>
