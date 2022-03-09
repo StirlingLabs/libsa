@@ -387,6 +387,8 @@ FodyWeavers.xsd
 
 /coverage
 
+# Mac
 .DS_Store
-docs
-Doxyfile.bak
+
+# Sphinx generated documentation
+docs/build

@@ -1,0 +1,9 @@
+{# Add variant selector for Read the Docs embedding #}
+{% if READTHEDOCS %}
+{% else %}
+<div class="sidebar-tree">
+    <p class="caption" role="heading">
+        <span class="caption-text">doc version: {{ current_version.name }}</span>
+      </p>
+</div>
+{% endif %}

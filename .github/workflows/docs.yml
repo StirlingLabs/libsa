@@ -41,25 +41,42 @@ jobs:
         -   uses: actions/checkout@v3
             with:
                 ref: ${{ (github.event.inputs || inputs).commit || github.sha }}
-        -   name: Generate Documentation
-            uses: mattnotmitt/doxygen-action@v1.9.3
-        -   name: List Releases
-            uses: octokit/request-action@v2.x
-            id: list_releases
+                fetch-depth: 0
+        -   name: Set up Python environment
+            uses: actions/setup-python@v3
             with:
-                route: GET /repos/${{ github.repository }}/releases
-            env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        -   name: Print releases
+                python-version: 3.9
+                cache: 'pip'
+                cache-dependency-path: 'docs/requirements.txt'
+        -   name: Install Sphinx & required modules
             run: |
-                cat >releases.json <<'EOL'
-                ${{ steps.list_releases.outputs.data }}
-                EOL
-                jq '.[] | .tag_name,.draft,.prerelease,.published_at,.body' releases.json
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            working-directory: ./docs
+        -   name: Install python3-clang
+            run: sudo apt install python3-clang
+        -   name: Build documentation
+            run: |
+                sphinx-multiversion source build/html
+            working-directory: ./docs
+        -   name: Move out of repo
+            run: |
+                sphinx-multiversion source build/html
+            working-directory: ./docs
+        -   name: Create index
+            shell: bash
+            working-directory: ./docs
+            env:
+                filename: build/html/index.html
+            run: |
+                echo '<html><head><meta http-equiv="Refresh" content="0; url=' > $filename
+                echo "'/main/'" >> $filename
+                echo '" /></head><body>Redirecting</body></html>' >> $filename
+                cat $filename
         -   name: Commit Documentation
             uses: StirlingLabs/BranchStorageAction@main
             with:
                 prune: true
-                src: docs/html/*
-                dst: ${{ (github.event.inputs || inputs).tag || github.ref_name }}/
+                src: docs/build/html/*
+                dst: .
                 storage-branch: gh-pages
