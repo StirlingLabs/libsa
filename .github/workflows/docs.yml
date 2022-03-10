@@ -70,13 +70,13 @@ jobs:
                 filename: build/html/index.html
             run: |
                 echo '<html><head><meta http-equiv="Refresh" content="0; url=' > $filename
-                echo "'/main/'" >> $filename
+                echo "'/libsa/main/'" >> $filename
                 echo '" /></head><body>Redirecting</body></html>' >> $filename
                 cat $filename
         -   name: Commit Documentation
             uses: StirlingLabs/BranchStorageAction@main
             with:
                 prune: true
-                src: docs/build/html/*
+                src: docs/build/html/**
                 dst: .
                 storage-branch: gh-pages
