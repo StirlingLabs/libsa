@@ -52,8 +52,8 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r requirements.txt
             working-directory: ./docs
-        -   name: Install python3-clang
-            run: sudo apt install python3-clang
+        -   name: Install python3-clang & essential libs
+            run: sudo apt install python3-clang build-essential
         -   name: Build documentation
             run: |
                 sphinx-multiversion source build/html
