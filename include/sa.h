@@ -4,7 +4,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <cstdalign>
+//#include <cstdalign> // deprecated c++17, removed in c++20; is keywords
 #include <cassert>
 
 #else
