@@ -40,7 +40,6 @@ jobs:
         steps:
         -   uses: actions/checkout@v3
             with:
-                ref: ${{ (github.event.inputs || inputs).commit || github.sha }}
                 fetch-depth: 0
         -   name: Set up Python environment
             uses: actions/setup-python@v3
@@ -59,24 +58,21 @@ jobs:
             run: |
                 sphinx-multiversion source build/html
             working-directory: ./docs
-        -   name: Move out of repo
-            run: |
-                sphinx-multiversion source build/html
-            working-directory: ./docs
         -   name: Create index
             shell: bash
-            working-directory: ./docs
+            working-directory: ./docs/build/html/
             env:
-                filename: build/html/index.html
+                filename: index.html
             run: |
                 echo '<html><head><meta http-equiv="Refresh" content="0; url=' > $filename
                 echo "'/libsa/main/'" >> $filename
                 echo '" /></head><body>Redirecting</body></html>' >> $filename
-                cat $filename
-        -   name: Commit Documentation
+                touch .nojekyll
+                ls -la
+        -   name: Commit documentation
             uses: StirlingLabs/BranchStorageAction@main
             with:
                 prune: true
-                src: docs/build/html/**
+                src: docs/build/html/*
                 dst: .
                 storage-branch: gh-pages
