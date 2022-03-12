@@ -17,12 +17,13 @@
 # -- Project information -----------------------------------------------------
 
 project = 'libsa'
-copyright = '2022, Stirling Labs'
+copyright = '2022, Stirling Labs, all rights reserved.'
 author = 'Stirling Labs'
-html_logo = "../../libsa.jpg"
+html_logo = "../libsa-social.jpg"
 
 # The full version, including alpha/beta/rc tags
-release = '22.03.1'
+version = "GitHub"
+release = version
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,7 +33,8 @@ release = '22.03.1'
 # ones.
 extensions = [
     'sphinx.ext.duration',
-    'sphinx.ext.githubpages',
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
     'hawkmoth',
     "sphinx_multiversion",
     "myst_parser",
@@ -45,6 +47,20 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+
+# -- Options for TODOs -------------------------------------------------------
+#
+
+todo_include_todos = True
+
+# -- Options for Markdown files ----------------------------------------------
+#
+
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+]
+myst_heading_anchors = 3
 
 # -- Hawkmoth ---------------------------------------------------------------
 
@@ -65,6 +81,9 @@ cautodoc_transformations = {
 #Config.set_library_file('libclang.so')
 
 # -- Options for HTML output -------------------------------------------------
+
+html_title = "libsa"
+language = "en"
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.

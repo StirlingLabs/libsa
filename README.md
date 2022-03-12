@@ -1,4 +1,4 @@
-![libsa](libsa.jpg)
+![libsa](docs/libsa.jpg)
 
 `libsa` provides cross-platform socket address bindings in C11, designed to be very portable and easy to use.  This allows higher-level network code to use a single format but still communicate effectively with low-level native platform code.
 
