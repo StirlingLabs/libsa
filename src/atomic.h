@@ -97,38 +97,38 @@ bool cas(intptr2_t *target, intptr2_t *comparand, intptr2_t *exchange) {
     // based on atomic.cc from Google's Fuchsia under MIT
     // this is an implementation with the strongest semantics
 
-    volatile intptr2_t* ptr = (volatile intptr2_t*)target;
-    intptr2_t* expected = (intptr2_t*)comparand;
+    volatile intptr2_t *ptr = (volatile intptr2_t *) target;
+    intptr2_t *expected = (intptr2_t *) comparand;
     int result;
     do {
-      uint64_t temp_lo;
-      uint64_t temp_hi;
-      __asm__ volatile(
-          "ldaxp %[lo], %[hi], %[src]"
-           : [ lo ] "=r"(temp_lo)
-           , [ hi ] "=r"(temp_hi)
-           : [ src ] "Q"(*ptr)
-           : "memory"
-       );
-      intptr2_t temp = ((intptr2_t)temp_hi) << 64 | temp_lo;
-  
-      if (temp != *expected) {
-        // No reason to leave the monitor in Exclusive so clear it.
-        __asm__ volatile("clrex");
-        *expected = temp;
-        return false;
-      }
-  
-      intptr_t desired_lo = (intptr_t)(*exchange);
-      intptr_t desired_hi = (intptr_t)(*exchange >> 64);
-      __asm__ volatile(
-          "stlxp %w[result], %[lo], %[hi], %[ptr]"
-           : [ result ] "=&r"(result)
-           , [ ptr ] "=Q"(*ptr)
-           : [ lo ] "r"(desired_lo)
-           , [ hi ] "r"(desired_hi)
-           : "memory"
-       );
+        uint64_t temp_lo;
+        uint64_t temp_hi;
+        __asm__ volatile(
+                "ldaxp %[lo], %[hi], %[src]"
+                : [ lo ] "=r"(temp_lo)
+                , [ hi ] "=r"(temp_hi)
+        : [ src ] "Q"(*ptr)
+        : "memory"
+        );
+        intptr2_t temp = ((intptr2_t) temp_hi) << 64 | temp_lo;
+
+        if (temp != *expected) {
+            // No reason to leave the monitor in Exclusive so clear it.
+            __asm__ volatile("clrex");
+            *expected = temp;
+            return false;
+        }
+
+        intptr_t desired_lo = (intptr_t) (*exchange);
+        intptr_t desired_hi = (intptr_t) (*exchange >> 64);
+        __asm__ volatile(
+                "stlxp %w[result], %[lo], %[hi], %[ptr]"
+                : [ result ] "=&r"(result)
+                , [ ptr ] "=Q"(*ptr)
+        : [ lo ] "r"(desired_lo)
+                , [ hi ] "r"(desired_hi)
+        : "memory"
+        );
     } while (result);
     return true;
 #else
@@ -167,6 +167,7 @@ bool cas(intptr2_t *target, intptr2_t *comparand, intptr2_t *exchange) {
 #else
     p2_t desired = *comparand;
     return atomic_compare_exchange_strong((_Atomic intptr2_t*)target, &desired, *exchange);
+#endif
 #endif
 }
 
@@ -225,7 +226,6 @@ intptr2_t cas_read(intptr2_t * target) {
 #endif
 }
 
-#endif
 #endif
 
 #define intptr2_sub(name, i) \

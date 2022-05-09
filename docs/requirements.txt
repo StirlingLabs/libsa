@@ -1,6 +1,8 @@
 clang==10.0.1
 furo==2022.3.4
 hawkmoth==0.10.0
-myst-parser==0.17.0
+myst-parser==0.17.2
 Sphinx==4.4.0
 sphinx-multiversion==0.2.4
+sphinxext-opengraph==0.6.2
+sphinx-version-warning==1.1.2
