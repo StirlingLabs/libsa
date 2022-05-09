@@ -2,9 +2,12 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="#" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="libsa API" href="api.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/><title>Search - libsa</title><link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+        <title>libsa</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -118,7 +121,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">libsa</div></a>
+      <a href="#"><div class="brand">libsa</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -129,7 +132,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -138,14 +141,14 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="index.html">
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="#">
   
   <div class="sidebar-logo-container">
     <img class="sidebar-logo" src="_static/libsa-social.jpg" alt="Logo"/>
   </div>
   
   
-</a><form class="sidebar-search-container" method="get" action="#" role="search">
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -154,7 +157,7 @@
 
 <div class="sidebar-tree">
     <p class="caption" role="heading">
-        <span class="caption-text">v22.05.0</span>
+        <span class="caption-text">main</span>
       </p>
 </div>
 <div class="sidebar-scroll"><div class="sidebar-tree">
@@ -169,7 +172,7 @@
   </p>
   <ul>
     <li class="toctree-l1">
-      <a class="reference internal" href="../main/index.html">main</a>
+      <a class="reference internal" href="index.html">main</a>
     </li>
   </ul>
   <p class="caption" role="heading">
@@ -180,7 +183,7 @@
       <a class="reference internal" href="../v22.03.2/index.html">v22.03.2</a>
     </li>
     <li class="toctree-l1">
-      <a class="reference internal" href="search.html">v22.05.0</a>
+      <a class="reference internal" href="../v22.05.0/index.html">v22.05.0</a>
     </li>
   </ul>
 </div>
@@ -206,30 +209,52 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          
-<noscript>
-<div class="admonition error">
-  <p class="admonition-title">Error</p>
-  <p>
-    Please activate JavaScript to enable the search functionality.
-  </p>
+          <div class="toctree-wrapper compound">
 </div>
-</noscript>
-
-<div id="search-results"></div>
+<p><img alt="libsa" src="_images/libsa.jpg"/></p>
+<p><code class="docutils literal notranslate"><span class="pre">libsa</span></code> provides cross-platform socket address bindings in C11, designed to be very portable and easy to use.  This allows higher-level network code to use a single format but still communicate effectively with low-level native platform code.</p>
+<p>Users are guaranteed big endian (network) byte order of address bytes, so you do not have to worry about byte order for ports and scope indexes regardless of the underlying platform.  <code class="docutils literal notranslate"><span class="pre">libsa</span></code> abstracts away address family values, the location of the address family field, provides sizing information and takes care of allocation and freeing of sockaddr structures on the heap.</p>
+<section id="why-reinvent-the-wheel">
+<h1>Why reinvent the wheel?<a class="headerlink" href="#why-reinvent-the-wheel" title="Permalink to this headline">#</a></h1>
+<p>Historically, binding authors have had to work around platform inconsistency in sockaddr or rely on native libraries to manipulate sockaddr via helper functions (e.g. <code class="docutils literal notranslate"><span class="pre">libuv</span></code> has a lot of sockaddr code).  The concept provided by <code class="docutils literal notranslate"><span class="pre">libsa</span></code> is to separate the helper functions from the target library, so it doesn’t have to be rewritten every time, yet lets those bindings cooperate effectively.</p>
+</section>
+<section id="portable">
+<h1>Portable<a class="headerlink" href="#portable" title="Permalink to this headline">#</a></h1>
+<p>Currently wrapped for:</p>
+<ul class="simple">
+<li><p>C#/.Net by <a class="reference external" href="https://github.com/StirlingLabs/sockaddr.Net">sockaddr.Net</a></p></li>
+</ul>
+<p>If you wrap libsa for another language, please create a PR to update this list.</p>
+</section>
+<section id="future">
+<h1>Future<a class="headerlink" href="#future" title="Permalink to this headline">#</a></h1>
+<p>We intend to expand this to any platform or shape of sockaddr without changing the API, all that should be required is by simply recompiling to the target platform with no special treatment.</p>
+</section>
+<section id="support">
+<h1>Support<a class="headerlink" href="#support" title="Permalink to this headline">#</a></h1>
+<p>Development of this project is supported by <a class="reference external" href="https://stirlinglabs.github.io">Stirling Labs</a>.</p>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="api.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">libsa API</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
           
         </div>
         <div class="bottom-of-page">
@@ -251,8 +276,27 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Why reinvent the wheel?</a></li>
+<li><a class="reference internal" href="#portable">Portable</a></li>
+<li><a class="reference internal" href="#future">Future</a></li>
+<li><a class="reference internal" href="#support">Support</a></li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -262,8 +306,5 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
-    
-<script src="_static/searchtools.js"></script>
-<script src="_static/language_data.js"></script>
-<script src="searchindex.js"></script></body>
+    </body>
 </html>
