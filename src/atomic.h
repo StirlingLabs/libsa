@@ -1,10 +1,5 @@
 #pragma once
 
-/*
- * this is just a toy for future use with xch_sa_mm_fns
- * missing: arm64 impl on non-win
- */
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>

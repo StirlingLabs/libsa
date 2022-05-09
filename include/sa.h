@@ -4,7 +4,6 @@
 
 #include <cstddef>
 #include <cstdint>
-//#include <cstdalign> // deprecated c++17, removed in c++20; is keywords
 #include <cassert>
 
 #else
@@ -16,9 +15,6 @@
 
 #endif
 
-/**
- * @brief SA_BOOL booleans are non-zero integers for true, zero for false.
- */
 #ifdef DOXYGEN
 #define SA_EXPORT extern
 #else
