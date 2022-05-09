@@ -4,9 +4,9 @@
 #include "atomic.h"
 
 #if INTPTR_MAX == INT64_MAX
-static intptr_t sa_alloc_cookie = 0x7259813133E9FAA6;
+intptr_t sa_alloc_cookie = 0x7259813133E9FAA6;
 #elif INTPTR_MAX == INT32_MAX
-static intptr_t sa_alloc_cookie = 0x33E9FAA6;
+intptr_t sa_alloc_cookie = 0x33E9FAA6;
 #else
 #error Not yet implemented
 #endif
@@ -17,36 +17,36 @@ typedef struct sa_alloc_header {
 } sa_alloc_header_t;
 
 alignas(sa_mm_fns_align)
-static sa_mm_fns_t sa_mm_fns;
+sa_mm_fns_t sa_mm_fns;
 
 INLINE
-static bool cas_mm_fns(sa_mm_fns_t *comparand, sa_mm_fns_t *exchange) {
+bool cas_mm_fns(sa_mm_fns_t *comparand, sa_mm_fns_t *exchange) {
     return cas((intptr2_t *) &sa_mm_fns, (intptr2_t *) comparand, (intptr2_t *) exchange);
 }
 
 INLINE
-static sa_mm_fns_t _to_mm_fns_t(intptr2_t x) {
+sa_mm_fns_t _to_mm_fns_t(intptr2_t x) {
     return (struct sa_mm_fns) {(sa_alloc_t *) intptr2_sub(x, 0), (sa_free_t *) intptr2_sub(x, 1)};
 }
 
 INLINE
-static sa_mm_fns_t read_mm_fns() {
+sa_mm_fns_t read_mm_fns() {
     return _to_mm_fns_t(cas_read((intptr2_t *) &sa_mm_fns));
 }
 
-static void *default_sa_alloc(size_t size) {
+void *default_sa_alloc(size_t size) {
     // assume size will always be greater than sizeof(sa_alloc_header_t) 
     void *p = malloc(size);
     memset(&((sa_alloc_header_t *) p)[1], 0, size - sizeof(sa_alloc_header_t));
     return p;
 }
 
-static void default_free(const void *ptr) {
+void default_free(const void *ptr) {
     free((void *) ptr);
 }
 
 alignas(sa_mm_fns_align)
-static sa_mm_fns_t sa_mm_fns = {default_sa_alloc, default_free};
+sa_mm_fns_t sa_mm_fns = {default_sa_alloc, default_free};
 
 sa_mm_fns_t xch_sa_mm_fns(sa_mm_fns_t *p) {
     if (p == NULL || p->alloc == NULL || p->free == NULL) {

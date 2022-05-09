@@ -2,14 +2,14 @@
 #include "sa.h"
 #include "sa_mm.h"
 
-INLINE static const char *_sa_unspec_to_str() {
+INLINE const char *_sa_unspec_to_str() {
     char *s = sa_alloc(2);
     if (s == NULL) return NULL;
     s[0] = '*';
     return s;
 }
 
-INLINE static const char *_sa_ipv4_to_str(struct sockaddr_in *sa) {
+INLINE const char *_sa_ipv4_to_str(struct sockaddr_in *sa) {
     char *s = sa_alloc(INET_ADDRSTRLEN);
     if (s == NULL) return NULL;
 
@@ -21,7 +21,7 @@ INLINE static const char *_sa_ipv4_to_str(struct sockaddr_in *sa) {
 }
 
 
-INLINE static const char *_sa_ipv6_to_str(struct sockaddr_in6 *sa) {
+INLINE const char *_sa_ipv6_to_str(struct sockaddr_in6 *sa) {
     char *s = sa_alloc(INET6_ADDRSTRLEN);
     if (s == NULL) return NULL;
 
