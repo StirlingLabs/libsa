@@ -1,6 +1,6 @@
-clang==10.0.1
-furo==2022.3.4
-hawkmoth==0.10.0
+clang==14.0
+furo==2022.4.7
+hawkmoth==0.11.0
 myst-parser==0.17.2
-Sphinx==4.4.0
+Sphinx==4.5.0
 sphinx-multiversion==0.2.4
