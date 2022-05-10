@@ -4,3 +4,5 @@ hawkmoth==0.11.0
 myst-parser==0.17.2
 Sphinx==4.5.0
 sphinx-multiversion==0.2.4
+sphinxext-opengraph==0.6.2
+sphinx-version-warning==1.1.2

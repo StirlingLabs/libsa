@@ -4,6 +4,17 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+# -- General setup -----------------------------------------------------------
+
+# We do far too much in this config file really... but what can you do?
+
+import os
+import re
+import subprocess
+import datetime
+
+project_root = os.path.abspath('../../')
+
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -38,6 +49,8 @@ extensions = [
     'hawkmoth',
     "sphinx_multiversion",
     "myst_parser",
+    "sphinxext.opengraph",
+    # "sphinxext.opengraph",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -64,8 +77,7 @@ myst_heading_anchors = 3
 
 # -- Hawkmoth ---------------------------------------------------------------
 
-import os
-cautodoc_root = os.path.abspath('../../')
+cautodoc_root = project_root
 
 from hawkmoth.util import compiler
 cautodoc_clang = compiler.get_include_args()
@@ -79,6 +91,15 @@ cautodoc_transformations = {
 # To get around issue on GitHub Actions
 #from clang.cindex import Config         
 #Config.set_library_file('libclang.so')
+
+# Tell sphinx what the primary language being documented is.
+primary_domain = 'c'
+
+# Tell sphinx what the pygments highlight language should be.
+highlight_language = 'c'
+
+# reduce the made with text
+show_sphinx = False
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -115,6 +136,22 @@ html_sidebars = {
         "sidebar/sphinx-multiversion.html",
     ]
 }
+
+# -- Opengraph settings -----------------------------------------------------
+
+# This config option is very important, set it to the URL the site is being hosted on.
+ogp_site_url = "https://stirlinglabs.github.io/libsa"
+# Link to image to show (optional). Note that  relative paths are converted to be relative to the root of the html output
+ogp_image = "https://stirlinglabs.github.io/libsa/main/_static/libsa-social.jpg"
+# Optional alt-text for image. Defaults to using ogp_site_name or the document's title, if available.
+# Set to False if you want to turn off alt text completely.
+ogp_image_alt = "libsa"
+# Name of the site, displayed above the title (optional).
+ogp_site_name = "libsa"
+# Configure the amount of characters taken from a page. The default of 200 is probably good for most people.
+# ogp_description_length = 300
+# Name of the site, not required but displayed above the title.
+
 # -- Multi-Version settings -------------------------------------------------
 
 # Whitelist pattern for tags (set to None to ignore all tags)

@@ -41,14 +41,14 @@ jobs:
         -   uses: actions/checkout@v3
             with:
                 fetch-depth: 0
+        -   name: Install python3-clang & essential libs
+            run: sudo apt install python3-clang-14 build-essential
         -   name: Set up Python environment
             uses: actions/setup-python@v3
             with:
                 python-version: 3.9
                 cache: 'pip'
                 cache-dependency-path: 'docs/requirements.txt'
-        -   name: Install python3-clang & essential libs
-            run: sudo apt install python3-clang-14 build-essential
         -   name: Install Sphinx & required modules
             run: |
                 python -m pip install --upgrade pip
