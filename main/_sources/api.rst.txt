@@ -13,4 +13,3 @@ API
 
 .. c:autodoc:: include/sa.h
    :transform: javadoc-liberal
-   :clang: -stdlib=libstdc++
