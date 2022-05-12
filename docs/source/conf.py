@@ -101,6 +101,10 @@ highlight_language = 'c'
 # reduce the made with text
 show_sphinx = False
 
+# debug info
+cautodoc_clang = compiler.get_include_args()
+print( "compiler.get_include_args():", cautodoc_clang )
+
 # -- Options for HTML output -------------------------------------------------
 
 html_title = "libsa"

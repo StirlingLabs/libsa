@@ -36,28 +36,26 @@ defaults:
 jobs:
     generate_docs:
         name: Generate Documentation
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-20.04
         steps:
         -   uses: actions/checkout@v3
             with:
                 fetch-depth: 0
-        -   name: Install python3-clang & essential libs
-            run: sudo apt install python3-clang-14 build-essential
-        -   name: Set up Python environment
-            uses: actions/setup-python@v3
-            with:
-                python-version: 3.9
-                cache: 'pip'
-                cache-dependency-path: 'docs/requirements.txt'
+        -   name: Install python3-clang
+            run: sudo apt install python3-clang-11
         -   name: Install Sphinx & required modules
-            run: |
-                python -m pip install --upgrade pip
-                pip install -r requirements.txt
+            run: pip install -r requirements.txt
             working-directory: ./docs
         -   name: Build documentation
             run: |
                 sphinx-multiversion source build/html
             working-directory: ./docs
+        -   name: Debugging
+            run: |
+                ls /usr/local/include
+                ls /usr/lib/llvm-11/lib/clang/11.0.0/include
+                ls /usr/include/x86_64-linux-gnu
+                ls /usr/include
         -   name: Create index
             shell: bash
             working-directory: ./docs/build/html/

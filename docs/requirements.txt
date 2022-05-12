@@ -1,4 +1,4 @@
-clang==14.0
+clang==11
 furo==2022.4.7
 hawkmoth==0.11.0
 myst-parser==0.17.2
