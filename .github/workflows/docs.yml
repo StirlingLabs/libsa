@@ -50,12 +50,6 @@ jobs:
             run: |
                 sphinx-multiversion source build/html
             working-directory: ./docs
-        -   name: Debugging
-            run: |
-                ls /usr/local/include
-                ls /usr/lib/llvm-11/lib/clang/11.0.0/include
-                ls /usr/include/x86_64-linux-gnu
-                ls /usr/include
         -   name: Create index
             shell: bash
             working-directory: ./docs/build/html/
