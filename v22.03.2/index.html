@@ -338,7 +338,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_get_size_by_family">
-<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_get_size_by_family</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">family</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_get_size_by_family" title="Permalink to this definition">#</a><br/></dt>
+<span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_get_size_by_family</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">family</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_get_size_by_family" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Gets the copyable size of a socket address of a given family.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attention</dt>
@@ -426,7 +426,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_unspec">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_unspec</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_unspec" title="Permalink to this definition">#</a><br/></dt>
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_unspec</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_unspec" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Creates an AF_UNSPEC socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attention</dt>
@@ -444,7 +444,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_ipv4">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv4</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">str</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv4" title="Permalink to this definition">#</a><br/></dt>
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv4</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">str</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv4" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Creates an AF_INET socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attention</dt>
@@ -463,7 +463,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_ipv4_bin">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv4_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">address</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv4_bin" title="Permalink to this definition">#</a><br/></dt>
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv4_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">address</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv4_bin" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Creates an AF_INET socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attention</dt>
@@ -482,7 +482,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_ipv6">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv6</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">str</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv6" title="Permalink to this definition">#</a><br/></dt>
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv6</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">str</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv6" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Creates an AF_INET6 socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attention</dt>
@@ -501,7 +501,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_ipv6_bin">
-<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv6_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">address</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv6_bin" title="Permalink to this definition">#</a><br/></dt>
+<span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_ipv6_bin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">address</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_ipv6_bin" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Creates an AF_INET6 socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attention</dt>
@@ -535,7 +535,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_set_port">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_set_port</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_set_port" title="Permalink to this definition">#</a><br/></dt>
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_set_port</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">port</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_set_port" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Sets the port of a socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -585,7 +585,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_get_scope_index">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_get_scope_index</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_get_scope_index" title="Permalink to this definition">#</a><br/></dt>
+<span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_get_scope_index</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_get_scope_index" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Gets the scope (network interface) index of a socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -600,7 +600,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_set_scope_index">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_set_scope_index</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">scope</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_set_scope_index" title="Permalink to this definition">#</a><br/></dt>
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_set_scope_index</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">scope</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_set_scope_index" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Sets the scope (network interface) index of a socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -746,7 +746,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_set_address_byte">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_set_address_byte</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_set_address_byte" title="Permalink to this definition">#</a><br/></dt>
+<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_set_address_byte</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">offset</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_set_address_byte" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Sets a byte within the address part of the socket address structure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -763,7 +763,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_address_bytes">
-<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_address_bytes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_address_bytes" title="Permalink to this definition">#</a><br/></dt>
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_address_bytes</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sa</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_address_bytes" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Allows direct memory access to the address bytes of a socket address.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -779,7 +779,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_scope_get_name">
-<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_scope_get_name</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">scope</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_scope_get_name" title="Permalink to this definition">#</a><br/></dt>
+<span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sa_scope_get_name</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n"><span class="pre">scope</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_scope_get_name" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Gets the name of a scope (network interface) index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -794,7 +794,7 @@
 </dd></dl>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.sa_scope_get_index">
-<span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_scope_get_index</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_scope_get_index" title="Permalink to this definition">#</a><br/></dt>
+<span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sa_scope_get_index</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">scope</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.sa_scope_get_index" title="Permalink to this definition">#</a><br/></dt>
 <dd><p>Finds the index for the name of a scope (network interface).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
