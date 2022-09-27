@@ -1,0 +1,135 @@
+name: Release
+
+on:
+    push:
+        tags:
+        - 'v*'
+
+defaults:
+    run:
+        shell: bash
+
+jobs:
+    metadata:
+        name: Collect Metadata
+        uses: StirlingLabs/.github/.github/workflows/metadata.yaml@main
+        with:
+            coreName: sa
+    
+    build:
+        name: Collect Metadata
+        uses: ./.github/workflows/integrate.yaml
+    
+    github:
+        name: GitHub Release
+        runs-on: ubuntu-latest
+        needs: [ metadata, build ]
+        steps:
+        -   name: Get Linux Artifact
+            uses: actions/download-artifact@v3
+            with:
+                name: ${{ needs.metadata.outputs.project }}-Linux
+                path: artifacts/Linux
+        -   name: Get macOS Artifact
+            uses: actions/download-artifact@v3
+            with:
+                name: ${{ needs.metadata.outputs.project }}-macOS
+                path: artifacts/macOS
+        -   name: Get Windows Artifact
+            uses: actions/download-artifact@v3
+            with:
+                name: ${{ needs.metadata.outputs.project }}-Windows
+                path: artifacts/Windows
+        -   name: Download Public Header
+            run: |
+                curl -H "Authorization: token ${{ github.token }}" \
+                  -H 'Accept: application/vnd.github.v3.raw' \
+                  -o artifacts/sa.h \
+                  -L ${{ github.api_url }}/repos/${{ github.repository }}/contents/sa.h?ref=${{ github.ref_name }}
+        -   name: Create GitHub Release
+            uses: softprops/action-gh-release@v0.1.14
+            with:
+                name: libsa-${{ needs.metadata.outputs.fullVersion }}
+                files: |
+                    artifacts/**
+
+    nuget:
+        name: NuPkg Release
+        needs: [ metadata, build ]
+        runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                include:
+                -   platform: Linux
+                    runtime: linux-x64
+                    result: libsa.so
+                -   platform: macOS
+                    runtime: osx
+                    result: libsa.dylib
+                -   platform: Windows
+                    runtime: win-x64
+                    result: sa.dll
+            fail-fast: true
+        steps:
+        -   name: Get Artifact
+            uses: actions/download-artifact@v3
+            with:
+                name: ${{ needs.metadata.outputs.project }}-${{ matrix.platform }}
+                path: ${{ matrix.runtime }}
+
+        -   name: Create NuSpec
+            run: |
+                ls -la
+                ls -la $platform
+                text="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                text="$text\n<package xmlns=\"http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd\">"
+                text="$text\n <metadata>"
+                text="$text\n  <id>StirlingLabs.sockaddr.Net.runtime.$runtime.$project</id>"
+                text="$text\n  <version>$version</version>"
+                text="$text\n  <title>$project $version</title>"
+                text="$text\n  <description>"
+                text="$text\n    $project provides cross-platform socket address bindings."
+                text="$text\n    This package provides the $project library on $runtime for consumption by sockaddr.Net."
+                text="$text\n  </description>"
+                text="$text\n  <authors>The Stirling Labs Team</authors>"
+                text="$text\n  <projectUrl>$homepage</projectUrl>"
+                text="$text\n  <readme>docs/Readme.md</readme>"
+                text="$text\n  <icon>images/icon.png</icon>"
+                text="$text\n  <tags>$project library SL sockets XP sockaddr StirlingLabs IP TCP UDP</tags>"
+                text="$text\n  <license type=\"expression\">BSD-3-Clause</license>"
+                text="$text\n  <requireLicenseAcceptance>true</requireLicenseAcceptance>"
+                text="$text\n  <repository type=\"git\" url=\"$gitUrl\" branch=\"$branch\" commit=\"$commit\" />"
+                text="$text\n </metadata>"
+                text="$text\n <files>"
+                text="$text\n  <file src=\"README.md\" target=\"docs/\" />"
+                text="$text\n  <file src=\"docs/SL.png\" target=\"images/\" />"
+                text="$text\n  <file src=\"$platform/$result\" target=\"runtimes/$runtime/native/\" />"
+                text="$text\n </files>"
+                text="$text\n</package>"
+                echo -e $text > $project.nuspec
+                cat $project.nuspec
+            env:
+                platform: ${{ matrix.platform }}
+                runtime: ${{ matrix.runtime }}
+                result: ${{ matrix.result }}
+                project: ${{ needs.metadata.outputs.project }}
+                version: ${{ needs.metadata.outputs.fullVersion }}
+                homepage: ${{ needs.metadata.outputs.homepage }}
+                license: ${{ github.repository.license.spdx_id }}
+                gitUrl: ${{ github.repository.git_url }}
+                url: https://github.com/StirlingLabs/assimp
+                repo: ${{ github.repositoryUrl }}
+                branch: ${{ needs.metadata.outputs.currentBranch }}
+                commit: ${{ github.sha }}
+
+        -   name: Create NuPkg
+            run: |
+                nuget pack $project.nuspec
+                ls -la
+
+        -   name: Upload NuPkg
+            run: |
+                dotnet nuget push *.nupkg -k ${{github.token}} -s https://nuget.pkg.github.com/${{github.repository_owner}}/index.json --no-symbols --skip-duplicate || true
+                # dotnet nuget push *.nupkg -k ${{secrets.NUGET_STIRLINGLABS_API_KEY}} -s https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
+
+

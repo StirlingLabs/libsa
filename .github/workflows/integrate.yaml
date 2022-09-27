@@ -1,4 +1,4 @@
-name: Integration
+name: Integrate
 
 on:
     push:
@@ -18,21 +18,12 @@ jobs:
     skip_check:
         name: Skip Run Check
         uses: StirlingLabs/.github/.github/workflows/threshold.yaml@main
-        with:
-            eventName: ${{ github.event_name }}
-            commitMessage: ${{ github.event.head_commit.message }}
-            pullRequestDraft: ${{ github.event.pull_request.draft == 'true' }}
-            refType: ${{ github.ref_type }}
-            refName: ${{ github.ref_name }}
 
     metadata:
         name: Collect Metadata
         uses: StirlingLabs/.github/.github/workflows/metadata.yaml@main
         with:
-            gitRepo: ${{ github.repository }}
             coreName: sa
-            refType: ${{ github.ref_type }}
-            refName: ${{ github.ref_name }}
 
     build:
         name: Build
@@ -88,18 +79,3 @@ jobs:
                     name: ${{ needs.metadata.outputs.project }}-${{ runner.os }}
                     path: ${{ env.workingDir }}/${{ matrix.result }}
                     if-no-files-found: error
-
-    store:
-        name: Store Artifacts
-        needs: [ skip_check, metadata, build ]
-        runs-on: ubuntu-latest
-        steps:
-        -   name: Collect Artifacts
-            uses: actions/download-artifact@v3
-            with:
-                name: |
-                    ${{ needs.metadata.outputs.project }}-Linux
-                    ${{ needs.metadata.outputs.project }}-macOS
-                    ${{ needs.metadata.outputs.project }}-Windows
-                path: collection
-
