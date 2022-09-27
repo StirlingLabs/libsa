@@ -11,14 +11,17 @@ defaults:
 
 jobs:
     metadata:
-        name: Collect Metadata
+        name: Collect
         uses: StirlingLabs/.github/.github/workflows/metadata.yaml@main
         with:
             coreName: sa
     
     build:
-        name: Collect Metadata
-        uses: ./.github/workflows/integrate.yaml
+        name: Build
+        needs: [ metadata ]
+        uses: ./.github/workflows/build.yaml
+        with:
+            project: ${{ needs.metadata.outputs.project }}
     
     github:
         name: GitHub Release
@@ -46,12 +49,19 @@ jobs:
                   -H 'Accept: application/vnd.github.v3.raw' \
                   -o artifacts/sa.h \
                   -L ${{ github.api_url }}/repos/${{ github.repository }}/contents/sa.h?ref=${{ github.ref_name }}
+        -   name: Tar up files
+            id: tar
+            run: |
+                echo "::set-output name=filename::$filename"
+                tar czf $filename --directory=artifacts .
+            env:
+                filename: ${{ needs.metadata.outputs.project }}-${{ needs.metadata.outputs.fullVersion }}.tar.gz
         -   name: Create GitHub Release
             uses: softprops/action-gh-release@v0.1.14
             with:
-                name: libsa-${{ needs.metadata.outputs.fullVersion }}
+                name: ${{ needs.metadata.outputs.project }}-${{ needs.metadata.outputs.fullVersion }}
                 files: |
-                    artifacts/**
+                    ${{ steps.tar.outputs.filename }}
 
     nuget:
         name: NuPkg Release
@@ -70,6 +80,11 @@ jobs:
                     runtime: win-x64
                     result: sa.dll
             fail-fast: true
+        env:
+            platform: ${{ matrix.platform }}
+            runtime: ${{ matrix.runtime }}
+            result: ${{ matrix.result }}
+            project: ${{ needs.metadata.outputs.project }}
         steps:
         -   name: Get Artifact
             uses: actions/download-artifact@v3
@@ -79,8 +94,6 @@ jobs:
 
         -   name: Create NuSpec
             run: |
-                ls -la
-                ls -la $platform
                 text="<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                 text="$text\n<package xmlns=\"http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd\">"
                 text="$text\n <metadata>"
@@ -93,34 +106,29 @@ jobs:
                 text="$text\n  </description>"
                 text="$text\n  <authors>The Stirling Labs Team</authors>"
                 text="$text\n  <projectUrl>$homepage</projectUrl>"
-                text="$text\n  <readme>docs/Readme.md</readme>"
+                text="$text\n  <readme>docs/README.md</readme>"
                 text="$text\n  <icon>images/icon.png</icon>"
-                text="$text\n  <tags>$project library SL sockets XP sockaddr StirlingLabs IP TCP UDP</tags>"
-                text="$text\n  <license type=\"expression\">BSD-3-Clause</license>"
+                text="$text\n  <tags>$project library SL sockets XP sockaddr StirlingLabs IP TCP UDP $topics</tags>"
+                text="$text\n  <license type=\"expression\">$license</license>"
                 text="$text\n  <requireLicenseAcceptance>true</requireLicenseAcceptance>"
                 text="$text\n  <repository type=\"git\" url=\"$gitUrl\" branch=\"$branch\" commit=\"$commit\" />"
                 text="$text\n </metadata>"
                 text="$text\n <files>"
-                text="$text\n  <file src=\"README.md\" target=\"docs/\" />"
-                text="$text\n  <file src=\"docs/SL.png\" target=\"images/\" />"
-                text="$text\n  <file src=\"$platform/$result\" target=\"runtimes/$runtime/native/\" />"
+                text="$text\n  <file src=\"$runtime/README.md\" target=\"docs/README.md\" />"
+                text="$text\n  <file src=\"$runtime/SL.png\" target=\"images/icon.png\" />"
+                text="$text\n  <file src=\"$runtime/$result\" target=\"runtimes/$runtime/native/\" />"
                 text="$text\n </files>"
                 text="$text\n</package>"
                 echo -e $text > $project.nuspec
                 cat $project.nuspec
             env:
-                platform: ${{ matrix.platform }}
-                runtime: ${{ matrix.runtime }}
-                result: ${{ matrix.result }}
-                project: ${{ needs.metadata.outputs.project }}
                 version: ${{ needs.metadata.outputs.fullVersion }}
                 homepage: ${{ needs.metadata.outputs.homepage }}
-                license: ${{ github.repository.license.spdx_id }}
-                gitUrl: ${{ github.repository.git_url }}
-                url: https://github.com/StirlingLabs/assimp
-                repo: ${{ github.repositoryUrl }}
+                license: MIT
+                gitUrl: ${{ github.event.repository.git_url }}
                 branch: ${{ needs.metadata.outputs.currentBranch }}
                 commit: ${{ github.sha }}
+                topics: ${{ needs.metadata.outputs.topics }}
 
         -   name: Create NuPkg
             run: |
@@ -130,6 +138,6 @@ jobs:
         -   name: Upload NuPkg
             run: |
                 dotnet nuget push *.nupkg -k ${{github.token}} -s https://nuget.pkg.github.com/${{github.repository_owner}}/index.json --no-symbols --skip-duplicate || true
-                # dotnet nuget push *.nupkg -k ${{secrets.NUGET_STIRLINGLABS_API_KEY}} -s https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
+                dotnet nuget push *.nupkg -k ${{secrets.NUGET_STIRLINGLABS_API_KEY}} -s https://api.nuget.org/v3/index.json --no-symbols --skip-duplicate
 
 

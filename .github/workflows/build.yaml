@@ -1,0 +1,76 @@
+name: Build
+
+on:
+    workflow_call:
+        inputs:
+          project:
+            description: Name of the project (relatively short)
+            type: string
+            required: true
+
+defaults:
+    run:
+        shell: bash
+
+jobs:
+    build:
+        name: Build
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                include:
+                -   os: ubuntu-22.04
+                    result: libsa.so
+                -   os: macos-12
+                    result: libsa.dylib
+                -   os: windows-2022
+                    result: bin/Release/sa.dll
+            fail-fast: false
+        env:
+            workingDir: build
+            finalDir: artifacts
+        defaults:
+          run:
+            shell: bash
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v3
+            -   name: Configure
+                id: cmake
+                run: |
+                    mkdir $workingDir && cd $workingDir
+                    cmd="cmake .."
+                    case "${RUNNER_OS}" in
+                        Linux)    $cmd -DCMAKE_BUILD_TYPE=Release ;;
+                        macOS)    $cmd -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" ;;
+                        Windows)  $cmd -G "Visual Studio 17 2022" -A x64 -DCMAKE_CONFIGURATION_TYPES=Release ;;
+                        *)        echo "Do not recognise ${RUNNER_OS}." && exit 1 ;;
+                    esac
+            -   name: Build
+                working-directory: ${{ env.workingDir }}
+                run: |
+                    cmd="cmake --build ."
+                    case "${RUNNER_OS}" in
+                        Linux)    $cmd ;;
+                        macOS)    $cmd ;;
+                        Windows)  $cmd --config Release ;;
+                        *)        echo "Do not recognise ${RUNNER_OS}." && exit 1 ;;
+                    esac
+            -   name: Test
+                working-directory: ${{ env.workingDir }}
+                run: ctest
+            -   name: Collect Files
+                run: |
+                  mkdir $finalDir && cd $finalDir
+                  cp $GITHUB_WORKSPACE/README.md .
+                  cp $GITHUB_WORKSPACE/docs/SL.png .
+                  cp $GITHUB_WORKSPACE/${{ env.workingDir }}/$lib .
+                  ls -la
+                env:
+                  lib: ${{ matrix.result }}
+            -   uses: actions/upload-artifact@v3
+                name: Artifacts
+                with:
+                    name: ${{ inputs.project }}-${{ runner.os }}
+                    path: ${{ env.finalDir }}/*
+                    if-no-files-found: error

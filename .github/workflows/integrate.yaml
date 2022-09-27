@@ -16,11 +16,13 @@ defaults:
 
 jobs:
     skip_check:
-        name: Skip Run Check
+        name: Skip Check
         uses: StirlingLabs/.github/.github/workflows/threshold.yaml@main
 
     metadata:
-        name: Collect Metadata
+        name: Collect
+        needs: [ skip_check ]
+        if: needs.skip_check.outputs.continue == 'true'
         uses: StirlingLabs/.github/.github/workflows/metadata.yaml@main
         with:
             coreName: sa
@@ -29,53 +31,16 @@ jobs:
         name: Build
         needs: [ skip_check, metadata ]
         if: needs.skip_check.outputs.continue == 'true'
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                include:
-                -   os: ubuntu-22.04
-                    result: libsa.so
-                -   os: macos-12
-                    result: libsa.dylib
-                -   os: windows-2022
-                    result: Release/sa.dll
-            fail-fast: false
-        env:
-            workingDir: build
-            finalDir: ${{ needs.metadata.outputs.project }}-${{ needs.metadata.outputs.significantVersion }}
-        defaults:
-          run:
-            shell: bash
+        uses: ./.github/workflows/build.yaml
+        with:
+            project: ${{ needs.metadata.outputs.project }}
+
+    list:
+        name: List Files
+        needs: build
+        runs-on: ubuntu-latest
+        if: needs.skip_check.outputs.continue == 'true'
         steps:
-            -   name: Checkout repo
-                uses: actions/checkout@v3
-            -   name: Configure
-                id: cmake
-                run: |
-                    mkdir $workingDir && cd $workingDir
-                    cmd="cmake .."
-                    case "${RUNNER_OS}" in
-                        Linux)    $cmd -DCMAKE_BUILD_TYPE=Release ;;
-                        macOS)    $cmd -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" ;;
-                        Windows)  $cmd -G "Visual Studio 17 2022" -A x64 -DCMAKE_CONFIGURATION_TYPES=Release ;;
-                        *)        echo "Do not recognise ${RUNNER_OS}." && exit 1 ;;
-                    esac
-            -   name: Build
-                working-directory: build
-                run: |
-                    cmd="cmake --build ."
-                    case "${RUNNER_OS}" in
-                        Linux)    $cmd ;;
-                        macOS)    $cmd ;;
-                        Windows)  $cmd --config Release ;;
-                        *)        echo "Do not recognise ${RUNNER_OS}." && exit 1 ;;
-                    esac
-            -   name: Test
-                working-directory: build
-                run: ctest
-            -   uses: actions/upload-artifact@v3
-                name: Artifact
-                with:
-                    name: ${{ needs.metadata.outputs.project }}-${{ runner.os }}
-                    path: ${{ env.workingDir }}/${{ matrix.result }}
-                    if-no-files-found: error
+        -   name: list
+            run: |
+                ls -laR
