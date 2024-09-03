@@ -29,17 +29,17 @@ jobs:
         needs: [ metadata, build ]
         steps:
         -   name: Get Linux Artifact
-            uses: actions/download-artifact@v3
+            uses: actions/download-artifact@v4.1.7
             with:
                 name: ${{ needs.metadata.outputs.project }}-Linux
                 path: artifacts/Linux
         -   name: Get macOS Artifact
-            uses: actions/download-artifact@v3
+            uses: actions/download-artifact@v4.1.7
             with:
                 name: ${{ needs.metadata.outputs.project }}-macOS
                 path: artifacts/macOS
         -   name: Get Windows Artifact
-            uses: actions/download-artifact@v3
+            uses: actions/download-artifact@v4.1.7
             with:
                 name: ${{ needs.metadata.outputs.project }}-Windows
                 path: artifacts/Windows
@@ -87,7 +87,7 @@ jobs:
             project: ${{ needs.metadata.outputs.project }}
         steps:
         -   name: Get Artifact
-            uses: actions/download-artifact@v3
+            uses: actions/download-artifact@v4.1.7
             with:
                 name: ${{ needs.metadata.outputs.project }}-${{ matrix.platform }}
                 path: ${{ matrix.runtime }}
