@@ -6,3 +6,4 @@ Sphinx==4.5.0
 sphinx-multiversion==0.2.4
 sphinxext-opengraph==0.6.2
 sphinx-version-warning==1.1.2
+urllib3>=2.5.0 # not directly required, pinned by Snyk to avoid a vulnerability
